@@ -5,6 +5,7 @@
  */
 package domino;
 import input.Excepciones;
+import piezas.Monton;
 import java.util.*;
 /**
  *
@@ -19,7 +20,9 @@ public class Domino {
         System.out.println("\t\tBienvenido a appDomino G&G");
         intro();
         int jugadores=nJugadores(); 
-        System.out.println("opcion");
+        System.out.println("Jugadores humanos: "+jugadores);
+        Monton monton= new Monton();
+        
     }
     
     public static int nJugadores(){ //Confirma el numero de jugadores entre 2 y 4.
