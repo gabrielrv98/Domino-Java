@@ -6,6 +6,7 @@
 package domino;
 import input.Excepciones;
 import piezas.Monton;
+import piezas.Mano;
 import java.util.*;
 /**
  *
@@ -19,9 +20,20 @@ public class Domino {
     public static void main(String[] args) {
         System.out.println("\t\tBienvenido a appDomino G&G");
         intro();
-        int jugadores=nJugadores(); 
-        System.out.println("Jugadores humanos: "+jugadores);
-        Monton monton= new Monton();
+        Monton todas= new Monton();
+        //int jugadores1=nJugadores();
+        Mano[] jugadores=new Mano[nJugadores()];
+        //meter para jugar vs ia;
+        System.out.println("Jugadores humanos: "+jugadores.length);
+        for (int i = 0; i < jugadores.length; i++) {
+            jugadores[i]=new Mano();
+        }
+        visualizarTodasLasPiezas(todas);
+        System.out.println("\nCada jugador tiene "+jugadores[0].getNPiezas()+" piezas.");
+        if((todas.getPiezasTotales()%jugadores.length)!=0)
+            System.out.println("Y en el monton quedan= "+todas.getPiezasTotales()%jugadores.length);
+        
+        
         
     }
     
@@ -42,5 +54,11 @@ public class Domino {
         System.out.println("*************************************************");
         System.out.println("*Se aceptan donaciones en forma de puntos extra.*");
         System.out.println("*************************************************");
+    }
+    
+    public static void visualizarTodasLasPiezas(Monton todas){
+        
+            System.out.println("\nVisualizando todas las piezas: ");
+            System.out.println(todas);
     }
 }

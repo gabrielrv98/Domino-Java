@@ -15,11 +15,12 @@ public class Excepciones {
     public static int introducirNumero(String aux){
         Scanner e= new Scanner (System.in);
         int resp=0;
-        boolean repetir=false;
+        boolean repetir;
         do {
             System.out.print(aux);
             try{
                 resp=Integer.parseInt(e.nextLine());
+                repetir=false;
             }catch(NumberFormatException exp){
               repetir=true;
             }
