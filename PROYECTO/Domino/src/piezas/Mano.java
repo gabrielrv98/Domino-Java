@@ -13,7 +13,7 @@ public class Mano {
     private static final int PIEZAS_MANO=7;
     private int nPiezas;
     private Pieza[] piezas;
-    private String nombre;
+    private final String nombre;
     
     public Mano(String name){
         nombre=name;
@@ -35,6 +35,19 @@ public class Mano {
     }
     public String getNombre(){
         return nombre;
+    }
+    
+    public Pieza getPieza(int p){
+        return piezas[p];
+    }
+    public int SumaPuntos(){
+        int suma=0;
+        for (int i = 0; i < nPiezas; i++) {
+            suma+=piezas[i].getN1();
+            suma+=piezas[i].getN2();
+        }
+        
+        return suma;
     }
     
     @Override
