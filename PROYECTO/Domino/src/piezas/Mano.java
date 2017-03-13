@@ -13,8 +13,10 @@ public class Mano {
     private static final int PIEZAS_MANO=7;
     private int nPiezas;
     private Pieza[] piezas;
+    private String nombre;
     
-    public Mano(){
+    public Mano(String name){
+        nombre=name;
         nPiezas=PIEZAS_MANO;
         //que piezas obtienes
     }

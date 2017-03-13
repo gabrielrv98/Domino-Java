@@ -11,18 +11,16 @@ package piezas;
  */
 public class Monton {
     private static final int MAX_NUMERO=6;
-    private int nPiezasTotales;
     private Pieza[] todas;
     private Pieza[] monton;
+    private int nPiezasMonton;
     
     public Monton(){
         int nPiezasTotales=0;
         for (int i = 0; i < MAX_NUMERO+1; i++) {
             nPiezasTotales+=i+1;
-        }
-        this.nPiezasTotales=nPiezasTotales;//se han obtenido el numero de piezas totales.
+        }//se han obtenido el numero de piezas totales.
         todas=new Pieza[nPiezasTotales];
-
         int k=0;
     
         for (int i = 0; i < MAX_NUMERO+1; i++) {
@@ -34,16 +32,23 @@ public class Monton {
         //System.out.println(todas[todas.length-1]+" nPiezasTotales: "+(nPiezasTotales));
         
     }
+    public void setMonton(int jugadores){
+        nPiezasMonton=todas.length-(jugadores*7);
+    }
+    
+    public int getNPiezasMonton(){
+        return nPiezasMonton;
+    }
     
     public int getPiezasTotales(){
         return todas.length;
     }
     
+    @Override
     public String toString(){
-        String aux;
         StringBuilder toret= new StringBuilder();
         int j=0,k=MAX_NUMERO+1;
-        for (int i = 0; i < nPiezasTotales; i++) {
+        for (int i = 0; i < todas.length; i++) {
             if(j==k){
                 toret.append("\n");
                 k-=1;

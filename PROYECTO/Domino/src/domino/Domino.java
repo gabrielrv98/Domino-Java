@@ -26,12 +26,15 @@ public class Domino {
         //meter para jugar vs ia;
         System.out.println("Jugadores humanos: "+jugadores.length);
         for (int i = 0; i < jugadores.length; i++) {
-            jugadores[i]=new Mano();
+            String aux=("Introduce el nombre del jugador "+(i+1)+":");
+            aux=Excepciones.introducirCadena(aux);
+            jugadores[i]=new Mano(aux);
         }
         visualizarTodasLasPiezas(todas);
         System.out.println("\nCada jugador tiene "+jugadores[0].getNPiezas()+" piezas.");
-        if((todas.getPiezasTotales()%jugadores.length)!=0)
-            System.out.println("Y en el monton quedan= "+todas.getPiezasTotales()%jugadores.length);
+        todas.setMonton(jugadores.length);
+        if(todas.getNPiezasMonton()!=0)
+            System.out.println("Y en el monton quedan "+todas.getNPiezasMonton());
         
         
         
