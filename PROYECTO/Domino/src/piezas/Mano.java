@@ -17,11 +17,34 @@ public class Mano {
     
     public Mano(String name){
         nombre=name;
-        nPiezas=PIEZAS_MANO;
+        piezas= new Pieza[PIEZAS_MANO];
+        nPiezas=0;
         //que piezas obtienes
+    }
+    public void setUnaPieza(Pieza pieza){
+        piezas[nPiezas]=pieza;
+        nPiezas++;
+    }
+    
+    public int getPIEZAS_MANO(){   
+        return PIEZAS_MANO;
     }
     
     public int getNPiezas(){
         return nPiezas;
+    }
+    public String getNombre(){
+        return nombre;
+    }
+    
+    @Override
+    public String toString(){
+        StringBuilder toret= new StringBuilder();
+        for (int i = 0; i < nPiezas; i++) {
+            toret.append(i+1);
+            toret.append(piezas[i]);
+            toret.append("\n");
+        }
+        return toret.toString();
     }
 }

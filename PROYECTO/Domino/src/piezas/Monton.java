@@ -21,6 +21,8 @@ public class Monton {
             nPiezasTotales+=i+1;
         }//se han obtenido el numero de piezas totales.
         todas=new Pieza[nPiezasTotales];
+        monton=new Pieza[nPiezasTotales];
+        nPiezasMonton=monton.length;
         int k=0;
     
         for (int i = 0; i < MAX_NUMERO+1; i++) {
@@ -28,19 +30,41 @@ public class Monton {
                 todas[k]= new Pieza(i,j);
                 k++;
             }
-        }//Se han creado todas las piezas y asignado a una posicion del array monton.
+        monton=todas;
+        }//Se han creado todas las piezas y asignado a una posicion del array todas.
         //System.out.println(todas[todas.length-1]+" nPiezasTotales: "+(nPiezasTotales));
         
     }
-    public void setMonton(int jugadores){
+    public Pieza getUnaPieza(int n){
+        return todas[n];
+    }
+    
+ /*   public void setMonton(int jugadores){
         nPiezasMonton=todas.length-(jugadores*7);
+    }
+ */   public void eliminarPiezaMonton(Pieza p){//5.5
+        int n=0;
+        //while(n<getNPiezasMonton()&& p!=monton[n])
+        while( p!=monton[n])
+            n++;
+        if(n==getNPiezasMonton())
+            System.err.println("hubo un error");
+        else{
+            for (int i = n+1; i < monton.length-1; i++) {
+                monton[i-1]=monton[i];
+            }
+        } 
+        nPiezasMonton--;
     }
     
     public int getNPiezasMonton(){
         return nPiezasMonton;
     }
+    public Pieza[] getPiezasMonton(){
+        return monton;
+    }
     
-    public int getPiezasTotales(){
+    public int getNPiezasTotales(){
         return todas.length;
     }
     

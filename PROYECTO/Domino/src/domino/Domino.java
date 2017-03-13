@@ -5,8 +5,7 @@
  */
 package domino;
 import input.Excepciones;
-import piezas.Monton;
-import piezas.Mano;
+import piezas.*;
 import java.util.*;
 /**
  *
@@ -21,7 +20,6 @@ public class Domino {
         System.out.println("\t\tBienvenido a appDomino G&G");
         intro();
         Monton todas= new Monton();
-        //int jugadores1=nJugadores();
         Mano[] jugadores=new Mano[nJugadores()];
         //meter para jugar vs ia;
         System.out.println("Jugadores humanos: "+jugadores.length);
@@ -31,11 +29,14 @@ public class Domino {
             jugadores[i]=new Mano(aux);
         }
         visualizarTodasLasPiezas(todas);
+        establecerMano(todas,jugadores);
         System.out.println("\nCada jugador tiene "+jugadores[0].getNPiezas()+" piezas.");
-        todas.setMonton(jugadores.length);
         if(todas.getNPiezasMonton()!=0)
             System.out.println("Y en el monton quedan "+todas.getNPiezasMonton());
-        
+        else
+            System.out.println("No quedan piezas en el monton");
+        System.out.println("El jugador1 ( "+ jugadores[0].getNombre()+" ) tiene en la mano: ");
+        System.out.println(jugadores[0]); 
         
         
     }
@@ -63,5 +64,39 @@ public class Domino {
         
             System.out.println("\nVisualizando todas las piezas: ");
             System.out.println(todas);
+    }
+    
+    public static void   establecerMano(Monton todas,Mano[] jugadores){
+        int pos;
+        Pieza pieza;
+        for (int i = 0; i < jugadores.length; i++) {
+            for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
+                pos=(int) (Math.random()*todas.getNPiezasTotales());
+                if(esta(pos, todas)){
+                    pieza= todas.getUnaPieza(pos);
+                    jugadores[i].setUnaPieza(pieza);
+                    todas.eliminarPiezaMonton(pieza);
+                }
+                else 
+                    j--;
+            }
+            
+            
+        }
+    }
+    public static boolean esta(int pieza,Monton todas){//saber si una pieza esta en el monton
+        boolean toret;
+        int n=0;
+        piezas.Pieza busq=todas.getUnaPieza(pieza);
+        piezas.Pieza[] monton=todas.getPiezasMonton();
+        while(n<todas.getNPiezasTotales() && busq!=monton[n])
+            n++;
+        if(n==todas.getNPiezasMonton()){
+            toret=false;
+        }
+        else
+            toret=true;
+        return toret;
+        
     }
 }
