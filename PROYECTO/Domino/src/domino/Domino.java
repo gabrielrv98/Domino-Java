@@ -7,11 +7,7 @@ package domino;
 import input.Excepciones;
 import piezas.*;
 import java.util.*;
-<<<<<<< HEAD
 import Tablero.*;
-=======
-import Tablero.Partida;
->>>>>>> origin/master
 /**
  *
  * @author grvidal
@@ -42,7 +38,6 @@ public class Domino {
             System.out.println("No quedan piezas en el monton");
         System.out.println("El jugador1 ( "+ jugadores[0].getNombre()+" ) tiene en la mano: ");
         System.out.println(jugadores[0]); 
-<<<<<<< HEAD
         Partida partida = new Partida();
         int carro=1;
         int actual=carro;
@@ -137,17 +132,6 @@ public class Domino {
         else 
             actual++;
         return actual;
-=======
-        System.out.println("sus puntos son: "+jugadores[0].SumaPuntos());
-        Partida partida= new Partida(jugadores);
-        int carro=1;
-        boolean tienenFichas=true;
-        boolean puedenJugar=false;//cambiar esto
-        //carro es el primero en jugar:
-        do{
-            System.out.println(partida.toString());
-        }while(tienenFichas && puedenJugar);
->>>>>>> origin/master
     }
     
     public static int nJugadores(){ //Confirma el numero de jugadores entre 2 y 4.
@@ -178,20 +162,13 @@ public class Domino {
     public static void   establecerMano(Monton todas,Mano[] jugadores){
         int pos;
         Pieza pieza;
-        Pieza DobleSeis= new Pieza(6,6);
         for (int i = 0; i < jugadores.length; i++) {
             for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
                 pos=(int) (Math.random()*todas.getNPiezasTotales());
                 if(esta(pos, todas)){
-                    if(i==2 && j==4)
-                        pieza=todas.getUnaPieza(27);
-                    else
-                        pieza= todas.getUnaPieza(pos);
+                    pieza= todas.getUnaPieza(pos);
                     jugadores[i].setUnaPieza(pieza);
                     todas.eliminarPiezaMonton(pieza);
-                    if(i==2 && j==4)
-                        if(jugadores[i].getPieza(j)==DobleSeis)
-                         System.out.println("esta aqui jug "+i+ "carta "+j);
                 }
                 else j--;
             }

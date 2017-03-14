@@ -10,19 +10,13 @@ package piezas;
  * @author reyga
  */
 public class Pieza {
-<<<<<<< HEAD
     private int n1;
     private int n2;
-=======
-    private final int n1;
-    private final int n2;
->>>>>>> origin/master
     
     public Pieza(int n1, int n2){
         this.n1=n1;
         this.n2=n2;
     }
-<<<<<<< HEAD
 
     public int getN1() {
         return n1;
@@ -37,14 +31,6 @@ public class Pieza {
         n1=n2;
         n2=aux;        
     }
-=======
-    public int getN1(){
-        return n1;
-    }
-    public int getN2(){
-        return n2;
-    }
->>>>>>> origin/master
     
     @Override
     public String toString(){
