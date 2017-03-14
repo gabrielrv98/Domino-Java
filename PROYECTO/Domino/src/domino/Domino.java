@@ -74,9 +74,7 @@ public class Domino {
             } while (opcion>maxOpciones || opcion<0);
             switch (opcion){
                 case 1: continuar = anhadirFicha(jug,partida);
-                        //ficha introducida si - salir del programa
-                                            //no-repetir
-                    break;
+                        break;
                 case 2: 
                     break;
                 case 3: cogerDelMonton(jug,monton);
@@ -239,11 +237,10 @@ public class Domino {
             for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
                 pos=(int) (Math.random()*todas.getNPiezasMonton());
                 pieza=todas.getUnaPiezaMonton(pos);
-                    jugadores[i].setUnaPieza(pieza);
-                    todas.eliminarPiezaMonton(pieza);
+                jugadores[i].setUnaPieza(pieza);
+                todas.eliminarPiezaMonton(pieza);
+                System.out.println(todas);
             }
-            
-            
         }
     }
 }

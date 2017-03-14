@@ -42,15 +42,16 @@ public class Monton {
     }
     
 
-    public void eliminarPiezaMonton(Pieza p){//5.5
+    public void eliminarPiezaMonton(Pieza p){
         int n=0;
-        //while(n<getNPiezasMonton()&& p!=monton[n])
-        while( p!=monton[n])
+        while(n<getNPiezasMonton() && p!=monton[n])
             n++;
         if(n==getNPiezasMonton())
-            System.err.println("hubo un error");
+            System.err.println("hubo un error, no se encontro la pieza");
         else{
-            for (int i = n+1; i < monton.length-1; i++) {
+            System.out.println("pieza a eliminar -"+p);
+            System.out.println("pieza localizada- "+monton[n]);
+            for (int i = n+1; i < monton.length; i++) {
                 monton[i-1]=monton[i];
             }
         } 
