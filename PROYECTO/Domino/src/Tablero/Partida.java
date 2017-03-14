@@ -18,6 +18,7 @@ public class Partida {
     public Partida(){
         primero = new Nodo(null,null,null);
         ultimo = new Nodo(null,null,primero);
+        primero.setSig(ultimo);
         numNodos=0;
     }
     
@@ -35,6 +36,14 @@ public class Partida {
         ultimo.getAnt().setSig(nuevo);
         ultimo.setAnt(nuevo);
         numNodos++;
+    }
+    public int getPrimera(){
+        Nodo actual=primero.getSig();
+        return actual.getValor().getN1();
+    }
+    public int getUltima(){
+        Nodo actual=ultimo.getAnt();
+        return actual.getValor().getN2();
     }
     
     @Override

@@ -45,12 +45,13 @@ public class Domino {
         int cont=0;//borrar
         int turno;
         do {
-            System.out.println("juega: "+actual);
+            System.out.println("juega: "+jugadores[actual].getNombre());
             puedeJugar=jugada(todas,jugadores[actual],partida);
+            System.out.println(partida);
             if(jugadores[actual].getNPiezas()==0)
                 System.out.println("El Jugador "+actual+ " ha ganado, gg.");//ha Ganado.
             cont++;//borrar
-            if(cont==2)//borrar
+            if(cont==6)//borrar
                 puedeJugar=false;
             actual= turno(actual,jugadores.length-1);
             
@@ -77,6 +78,7 @@ public class Domino {
             case 2: //pasar(); 
                 break;
             case 3: //cogerDelMonton(jug,partida);
+                    jugada(monton,jug,partida);
                 break;
                 
         }
@@ -88,12 +90,41 @@ public class Domino {
         System.out.println(jug);
         int opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
         Pieza pieza=jug.getUnaPieza(opcion-1);
-        int n1=pieza.getN1();
-        int n2=pieza.getN2();
         if(partida.getNumNodos()==0){
-            partida.
+            partida.insertarPrincipio(pieza);
         }
+        else{
+            int n1=pieza.getN1();
+            int n2=pieza.getN2();
+            System.out.println("primera: "+partida.getPrimera());
+            System.out.println("ultima: "+partida.getUltima());
+                if (n2==partida.getPrimera()){
+                    if(n2==partida.getUltima()){
+                        System.out.println("Donde deseas introducir la pieza:"
+                                + "\n1.-Al final."
+                                + "\n2.-Al principio.");
+                        int lugar;
+                        do {
+                            lugar=Excepciones.introducirNumero("Posicion: ");
+                        } while (lugar>2||lugar<0);
+                        switch (lugar){
+                            case 1: pieza.invertirPieza();
+                                    partida.insertarFinal(pieza);
+                                    break;
+                            case 2: partida.insertarPrincipio(pieza);
+                        }
+                    }else{ partida.insertarPrincipio(pieza); }
+                }else if(n2==partida.getUltima()){
+                        pieza.invertirPieza();
+                        partida.insertarFinal(pieza);
+                }
+                else {System.out.println("No se puede colocar la ficha.");}
+        }
+         System.out.println("a");   
     }
+        
+        
+    
     
     public static  int turno(int actual, int numJug){
         if (actual==numJug) 
