@@ -49,8 +49,6 @@ public class Monton {
         if(n==getNPiezasMonton())
             System.err.println("hubo un error, no se encontro la pieza");
         else{
-            System.out.println("pieza a eliminar -"+p);
-            System.out.println("pieza localizada- "+monton[n]);
             for (int i = n+1; i < monton.length; i++) {
                 monton[i-1]=monton[i];
             }

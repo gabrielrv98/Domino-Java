@@ -45,28 +45,38 @@ public class Domino {
         System.out.println("--------------------------------------");
         do {
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
-            fin=jugada(todas,jugadores[actual],partida);
+            //comprobar si puedo seguir
+            if(todas.getNPiezasMonton()>0)//aun puede coger cartas
+                fin=false;
+            else fin=comprobar(jugadores[actual],partida);//no puede y se comprueba si alguna
+            jugada(todas,jugadores[actual],partida);
+            fin=false;
             System.out.println(partida);
-            if(jugadores[actual].getNPiezas()==0)
-                System.out.println("El Jugador "+actual+ " ha ganado, gg.");//ha Ganado.
+            if(jugadores[actual].getNPiezas()==0){
+                 System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
+                 fin=true;
+            }
+               
             actual= turno(actual,jugadores.length-1);
             
         } while (!fin);
     }
     
-    public static  boolean jugada(Monton monton,Mano jug, Partida partida){
+    public static  void jugada(Monton monton,Mano jug, Partida partida){
         System.out.println(jug);
+        final int MAX_VECES_COGER =1;
         int opcion;
         int maxOpciones=2;
+        int vecesCogidas=0;
         boolean continuar;
-        boolean puedeCoger=true;
+        boolean toret=false;
         do {
             continuar=true;
             System.out.println("\t\tEligue que hacer:"
-                        + "\n1.- Jugar una ficha."
+                        + "\n1.- Poner una ficha en el tablero."
                         + "\n2.- Pasar");
-            if(monton.getNPiezasMonton()>0 && puedeCoger){
-                System.out.println("3.-Coger una ficha del monton.");
+            if(monton.getNPiezasMonton()>0 && vecesCogidas<MAX_VECES_COGER){
+                System.out.println("3.- Coger una ficha del monton.");
                 maxOpciones=3;
             }
             do {
@@ -75,10 +85,11 @@ public class Domino {
             switch (opcion){
                 case 1: continuar = anhadirFicha(jug,partida);
                         break;
-                case 2: 
+                case 2:
                     break;
                 case 3: cogerDelMonton(jug,monton);
-                        puedeCoger=false;
+                        System.out.println(jug);
+                        vecesCogidas++;
                         continuar=false;
                     break;
             }
@@ -86,9 +97,16 @@ public class Domino {
                 System.out.println("se repetiria");
         } while (!continuar);
             System.out.println("Turno para el siguiente");
-        return false;
     }
     
+    public static boolean comprobar(Mano jug,Partida partida){
+        int n=0;
+        int n1=partida.getPrimera();
+        int n2=partida.getUltima();
+        
+        
+        return false;
+    }
     
     public static void cogerDelMonton(Mano jug,Monton monton){
         int pos=(int) (Math.random()*monton.getNPiezasMonton());
@@ -239,7 +257,6 @@ public class Domino {
                 pieza=todas.getUnaPiezaMonton(pos);
                 jugadores[i].setUnaPieza(pieza);
                 todas.eliminarPiezaMonton(pieza);
-                System.out.println(todas);
             }
         }
     }
