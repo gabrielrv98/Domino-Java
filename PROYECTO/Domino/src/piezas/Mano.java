@@ -16,9 +16,9 @@ public class Mano {
     private String nombre;
     private boolean puedeJugar;
     
-    public Mano(String name){
+    public Mano(String name, int maxPiezasMano){
         nombre=name;
-        piezas= new Pieza[PIEZAS_MANO];
+        piezas= new Pieza[maxPiezasMano];
         nPiezas=0;
         puedeJugar=true;
         //que piezas obtienes
@@ -57,7 +57,6 @@ public class Mano {
             for (int i = n; i < nPiezas-1; i++) {
                 piezas[i]=piezas[i+1];
             }
-            System.out.println("pieza eliminada");
             nPiezas--;
         }
     }

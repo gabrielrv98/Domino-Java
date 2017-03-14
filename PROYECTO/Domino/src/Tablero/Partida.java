@@ -49,6 +49,7 @@ public class Partida {
     @Override
     public String toString(){
         StringBuilder toret= new StringBuilder();
+        toret.append("----------------------------------------\n");
         if(numNodos==0){
             toret.append("No hay fichas en el tablero.");
         }
@@ -63,7 +64,7 @@ public class Partida {
             }
             toret.append(" <-");
         }
-        
+        toret.append("\n----------------------------------------\n");
         return toret.toString();
     }
     

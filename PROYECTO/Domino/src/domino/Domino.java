@@ -23,11 +23,12 @@ public class Domino {
         Monton todas= new Monton();
         Mano[] jugadores=new Mano[nJugadores()];
         //meter para jugar vs ia;
+        int maxPiezasMano=todas.getNPiezasTotales()/jugadores.length;
         System.out.println("Jugadores humanos: "+jugadores.length);
         for (int i = 0; i < jugadores.length; i++) {
-            String aux=("Introduce el nombre del jugador "+(i+1)+":");
+            String aux=("Introduce el nombre del jugador "+(i+1)+": ");
             aux=Excepciones.introducirCadena(aux);
-            jugadores[i]=new Mano(aux);
+            jugadores[i]=new Mano(aux,maxPiezasMano);
         }
         visualizarTodasLasPiezas(todas);
         establecerMano(todas,jugadores);
@@ -36,63 +37,69 @@ public class Domino {
             System.out.println("Y en el monton quedan "+todas.getNPiezasMonton());
         else
             System.out.println("No quedan piezas en el monton");
-        System.out.println("El jugador1 ( "+ jugadores[0].getNombre()+" ) tiene en la mano: ");
-        System.out.println(jugadores[0]); 
         Partida partida = new Partida();
         int carro=1;
         int actual=carro;
         boolean puedeJugar=true;
         int cont=0;//borrar
         int turno;
+        System.out.println("--------------------------------------");
         do {
-            System.out.println("juega: "+jugadores[actual].getNombre());
-            puedeJugar=jugada(todas,jugadores[actual],partida);
+            
+            System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
+            puedeJugar=jugada(todas,jugadores[actual],partida, true);
             System.out.println(partida);
             if(jugadores[actual].getNPiezas()==0)
                 System.out.println("El Jugador "+actual+ " ha ganado, gg.");//ha Ganado.
             cont++;//borrar
-            if(cont==6)//borrar
+            if(cont==20)//borrar
                 puedeJugar=false;
             actual= turno(actual,jugadores.length-1);
             
         } while (puedeJugar);
     }
     
-    public static  boolean jugada(Monton monton,Mano jug, Partida partida){
+    public static  boolean jugada(Monton monton,Mano jug, Partida partida,boolean puedeCoger){
         System.out.println(jug);
         int opcion;
         int maxOpciones=2;
-        System.out.println("Eligue que hacer:"
-                    + "\n1.-Jugar una ficha."
-                    + "\n2.-Pasar");
-            if(monton.getNPiezasMonton()>0){
+        boolean nuevaFicha=false;
+        if(monton.getNPiezasMonton()>0 && puedeCoger)
+            nuevaFicha=true;
+        System.out.println("\t\tEligue que hacer:"
+                    + "\n1.- Jugar una ficha."
+                    + "\n2.- Pasar");
+            if(nuevaFicha){
                 System.out.println("3.-Coger una ficha del monton.");
                 maxOpciones=3;
             }
         do {
-            opcion=Excepciones.introducirNumero("Opcion: ");
+            opcion=Excepciones.introducirNumero("\nOpcion: ");
         } while (opcion>maxOpciones || opcion<0);
         switch (opcion){
             case 1: anhadirFicha(jug,partida);
                 break;
-            case 2: //pasar(); 
+            case 2: 
                 break;
             case 3: cogerDelMonton(jug,monton);
-                    //jugada(monton,jug,partida);
+                    jugada(monton,jug,partida,false);
                 break;
-                
         }
-        
+        if(nuevaFicha)
+            System.out.println("Turno para el siguiente");
         return true;
     }
     public static void cogerDelMonton(Mano jug,Monton monton){
         int pos=(int) (Math.random()*monton.getNPiezasMonton());
-        Pieza pieza= monton.
+        Pieza pieza= monton.getUnaPiezaMonton(pos);
+        jug.setUnaPieza(pieza);
+        monton.eliminarPiezaMonton(pieza);
     }
     
     public static void anhadirFicha(Mano jug, Partida partida){
         System.out.println(jug);
         int opcion;
+        System.out.println(partida);
         do{
             opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
         }while(opcion>jug.getNPiezas()||opcion<1);
@@ -174,7 +181,6 @@ public class Domino {
                     }
                     else System.out.println("No ha sido posible introducir la pieza.");       
         }
-         System.out.println("fin añadirPieza");   
     }
         
         
@@ -213,38 +219,19 @@ public class Domino {
             System.out.println(todas);
     }
     
-    public static void   establecerMano(Monton todas,Mano[] jugadores){
+    public static void   establecerMano(Monton todas,Mano[] jugadores){//otro bug
         int pos;
         Pieza pieza;
         for (int i = 0; i < jugadores.length; i++) {
             for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
-                pos=(int) (Math.random()*todas.getNPiezasTotales());
-                if(esta(pos, todas)){
-                    pieza= todas.getUnaPieza(pos);
+                pos=(int) (Math.random()*todas.getNPiezasMonton());
+                pieza=todas.getUnaPiezaMonton(pos);
                     jugadores[i].setUnaPieza(pieza);
                     todas.eliminarPiezaMonton(pieza);
-                }
-                else j--;
+                    System.out.println("hemos lelgado ya? - i->"+i+" j-> "+j);
             }
             
             
         }
-    }
-    public static boolean esta(int pieza,Monton todas){//saber si una pieza esta en el monton
-        boolean toret;
-    
-        int n=0;
-        piezas.Pieza busq=todas.getUnaPieza(pieza);
-        piezas.Pieza[] monton=todas.getPiezasMonton();
-        
-        while(n<todas.getNPiezasMonton() && busq!=monton[n])
-            n++;
-        if(n==todas.getNPiezasMonton()){
-            toret=false;
-        }
-        else
-            toret=true;
-        return toret;
-        
     }
 }

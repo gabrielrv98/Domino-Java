@@ -37,6 +37,9 @@ public class Monton {
     public Pieza getUnaPieza(int n){
         return todas[n];
     }
+    public Pieza getUnaPiezaMonton(int n){
+        return monton[n];
+    }
     
 
     public void eliminarPiezaMonton(Pieza p){//5.5
