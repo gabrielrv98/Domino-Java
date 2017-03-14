@@ -178,10 +178,12 @@ public class Domino {
     }
     public static boolean esta(int pieza,Monton todas){//saber si una pieza esta en el monton
         boolean toret;
+    
         int n=0;
         piezas.Pieza busq=todas.getUnaPieza(pieza);
         piezas.Pieza[] monton=todas.getPiezasMonton();
-        while(n<todas.getNPiezasTotales() && busq!=monton[n])
+        
+        while(n<todas.getNPiezasMonton() && busq!=monton[n])
             n++;
         if(n==todas.getNPiezasMonton()){
             toret=false;

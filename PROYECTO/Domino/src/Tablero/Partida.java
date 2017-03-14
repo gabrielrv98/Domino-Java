@@ -49,15 +49,21 @@ public class Partida {
     @Override
     public String toString(){
         StringBuilder toret= new StringBuilder();
-        Nodo actual=primero.getSig();
-        toret.append("->");
-        for (int i = 0; i < numNodos; i++) {
-            toret.append(actual.getValor());
-            if(actual.getSig()!=ultimo)
-                toret.append(" - ");
-            actual=actual.getSig();
+        if(numNodos==0){
+            toret.append("No hay fichas en el tablero.");
         }
-        toret.append(" <-");
+        else{
+            Nodo actual=primero.getSig();
+            toret.append("->");
+            for (int i = 0; i < numNodos; i++) {
+                toret.append(actual.getValor());
+                if(actual.getSig()!=ultimo)
+                    toret.append(" - ");
+                actual=actual.getSig();
+            }
+            toret.append(" <-");
+        }
+        
         return toret.toString();
     }
     
