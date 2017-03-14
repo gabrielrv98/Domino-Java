@@ -77,50 +77,104 @@ public class Domino {
                 break;
             case 2: //pasar(); 
                 break;
-            case 3: //cogerDelMonton(jug,partida);
-                    jugada(monton,jug,partida);
+            case 3: cogerDelMonton(jug,monton);
+                    //jugada(monton,jug,partida);
                 break;
                 
         }
         
         return true;
     }
+    public static void cogerDelMonton(Mano jug,Monton monton){
+        int pos=(int) (Math.random()*monton.getNPiezasMonton());
+        Pieza pieza= monton.
+    }
     
     public static void anhadirFicha(Mano jug, Partida partida){
         System.out.println(jug);
-        int opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
-        Pieza pieza=jug.getUnaPieza(opcion-1);
+        int opcion;
+        do{
+            opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
+        }while(opcion>jug.getNPiezas()||opcion<1);
+        Pieza pieza=jug.getUnaPieza(opcion-1);//tengo la pieza selecionada
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);
+            jug.eliminarPieza(pieza);
         }
-        else{
-            int n1=pieza.getN1();
-            int n2=pieza.getN2();
-            System.out.println("primera: "+partida.getPrimera());
-            System.out.println("ultima: "+partida.getUltima());
-                if (n2==partida.getPrimera()){
-                    if(n2==partida.getUltima()){
-                        System.out.println("Donde deseas introducir la pieza:"
-                                + "\n1.-Al final."
-                                + "\n2.-Al principio.");
-                        int lugar;
-                        do {
-                            lugar=Excepciones.introducirNumero("Posicion: ");
-                        } while (lugar>2||lugar<0);
-                        switch (lugar){
-                            case 1: pieza.invertirPieza();
-                                    partida.insertarFinal(pieza);
-                                    break;
-                            case 2: partida.insertarPrincipio(pieza);
+        else{//ya hay alguna pieza colocada
+                    int n1=pieza.getN1();
+                    int n2=pieza.getN2();//valores de las piezas seleccionadas del jugador
+                    if(n1==n2 || partida.getPrimera()==partida.getUltima()){//alguna pieza es dolbe
+                        
+                        if(n1==n2){//es una pieza doble
+                            if(n1!=partida.getPrimera() && n1!= partida.getUltima())
+                                System.out.println("No ha sido posible insertar la pieza");
+                            else{
+                                if(n1==partida.getPrimera()){
+                                    partida.insertarPrincipio(pieza);
+                                }
+                                else partida.insertarFinal(pieza);
+                                jug.eliminarPieza(pieza);
+                            }
                         }
-                    }else{ partida.insertarPrincipio(pieza); }
-                }else if(n2==partida.getUltima()){
-                        pieza.invertirPieza();
-                        partida.insertarFinal(pieza);
-                }
-                else {System.out.println("No se puede colocar la ficha.");}
+                        else {//la pieza sobre el tablero es doble
+                            if(n1==partida.getPrimera() || n2==partida.getPrimera()){
+                                if (n1==partida.getPrimera()) {//coincide con el numero de la izq
+                                    int pos;
+                                    System.out.println("Donde quieres colocar la pieza: "
+                                            + "\n1.-Izquierda."
+                                            + "\n2.-Derecha.");
+                                    do {
+                                        pos=Excepciones.introducirNumero("Lugar:");
+                                    } while (pos>2||pos<1);
+                                    if(pos==1){
+                                        pieza.invertirPieza();
+                                        partida.insertarPrincipio(pieza);
+                                    }
+                                    else partida.insertarFinal(pieza);
+                                }
+                                else if(n2==partida.getPrimera()) {//coincide con el numero de la derecha
+                                    int pos;
+                                    System.out.println("Donde quieres colocar la pieza: "
+                                            + "\n1.-Izquierda."
+                                            + "\n2.-Derecha.");
+                                    do {
+                                        pos=Excepciones.introducirNumero("Lugar:");
+                                    } while (pos>2||pos<1);
+                                    if(pos==2){
+                                        pieza.invertirPieza();
+                                        partida.insertarFinal(pieza);
+                                    }
+                                    else partida.insertarPrincipio(pieza);
+                                }
+                                jug.eliminarPieza(pieza);
+                            }
+                            else
+                                System.out.println("La pieza no tiene coincidencias.");
+                        }
+                    }
+                    //ninguna pieza es doble
+                    else if (n1==partida.getPrimera() || n1== partida.getUltima() 
+                            || n2==partida.getPrimera() || n2== partida.getUltima() ){//si se cumple la pieza se puede colocar en algun lugar
+                        if(n1==partida.getPrimera() || n1== partida.getUltima()){
+                            if(n1==partida.getPrimera()){
+                                pieza.invertirPieza();
+                                partida.insertarPrincipio(pieza);
+                            }
+                            else partida.insertarFinal(pieza);
+                        }
+                        else{
+                            if(n2==partida.getUltima()){
+                                pieza.invertirPieza();
+                                partida.insertarFinal(pieza);
+                            }
+                            else partida.insertarPrincipio(pieza);
+                        }
+                        jug.eliminarPieza(pieza);
+                    }
+                    else System.out.println("No ha sido posible introducir la pieza.");       
         }
-         System.out.println("a");   
+         System.out.println("fin añadirPieza");   
     }
         
         

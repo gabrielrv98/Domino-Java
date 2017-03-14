@@ -32,17 +32,14 @@ public class Monton {
             }
         monton=todas;
         }//Se han creado todas las piezas y asignado a una posicion del array todas.
-        //System.out.println(todas[todas.length-1]+" nPiezasTotales: "+(nPiezasTotales));
         
     }
     public Pieza getUnaPieza(int n){
         return todas[n];
     }
     
- /*   public void setMonton(int jugadores){
-        nPiezasMonton=todas.length-(jugadores*7);
-    }
- */   public void eliminarPiezaMonton(Pieza p){//5.5
+
+    public void eliminarPiezaMonton(Pieza p){//5.5
         int n=0;
         //while(n<getNPiezasMonton()&& p!=monton[n])
         while( p!=monton[n])

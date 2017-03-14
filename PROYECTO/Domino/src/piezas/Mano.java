@@ -47,6 +47,20 @@ public class Mano {
     public String getNombre(){
         return nombre;
     }
+    public void eliminarPieza(Pieza pieza){
+        int n=0;
+        while(n<nPiezas && piezas[n]!=pieza)
+            n++;
+        if(n==nPiezas)
+            System.err.println("HUBO UN ERROR, PIEZA NO ESTA EN LA MANO DE ESTE JUGADOR");
+        else{
+            for (int i = n; i < nPiezas-1; i++) {
+                piezas[i]=piezas[i+1];
+            }
+            System.out.println("pieza eliminada");
+            nPiezas--;
+        }
+    }
     
     @Override
     public String toString(){
