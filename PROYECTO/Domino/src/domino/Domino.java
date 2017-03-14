@@ -40,55 +40,58 @@ public class Domino {
         Partida partida = new Partida();
         int carro=1;
         int actual=carro;
-        boolean puedeJugar=true;
-        int cont=0;//borrar
+        boolean fin;
         int turno;
         System.out.println("--------------------------------------");
         do {
-            
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
-            puedeJugar=jugada(todas,jugadores[actual],partida, true);
+            fin=jugada(todas,jugadores[actual],partida);
             System.out.println(partida);
             if(jugadores[actual].getNPiezas()==0)
                 System.out.println("El Jugador "+actual+ " ha ganado, gg.");//ha Ganado.
-            cont++;//borrar
-            if(cont==20)//borrar
-                puedeJugar=false;
             actual= turno(actual,jugadores.length-1);
             
-        } while (puedeJugar);
+        } while (!fin);
     }
     
-    public static  boolean jugada(Monton monton,Mano jug, Partida partida,boolean puedeCoger){
+    public static  boolean jugada(Monton monton,Mano jug, Partida partida){
         System.out.println(jug);
         int opcion;
         int maxOpciones=2;
-        boolean nuevaFicha=false;
-        if(monton.getNPiezasMonton()>0 && puedeCoger)
-            nuevaFicha=true;
-        System.out.println("\t\tEligue que hacer:"
-                    + "\n1.- Jugar una ficha."
-                    + "\n2.- Pasar");
-            if(nuevaFicha){
+        boolean continuar;
+        boolean puedeCoger=true;
+        do {
+            continuar=true;
+            System.out.println("\t\tEligue que hacer:"
+                        + "\n1.- Jugar una ficha."
+                        + "\n2.- Pasar");
+            if(monton.getNPiezasMonton()>0 && puedeCoger){
                 System.out.println("3.-Coger una ficha del monton.");
                 maxOpciones=3;
             }
-        do {
-            opcion=Excepciones.introducirNumero("\nOpcion: ");
-        } while (opcion>maxOpciones || opcion<0);
-        switch (opcion){
-            case 1: anhadirFicha(jug,partida);
-                break;
-            case 2: 
-                break;
-            case 3: cogerDelMonton(jug,monton);
-                    jugada(monton,jug,partida,false);
-                break;
-        }
-        if(nuevaFicha)
+            do {
+                opcion=Excepciones.introducirNumero("\nOpcion: ");
+            } while (opcion>maxOpciones || opcion<0);
+            switch (opcion){
+                case 1: continuar = anhadirFicha(jug,partida);
+                        //ficha introducida si - salir del programa
+                                            //no-repetir
+                    break;
+                case 2: 
+                    break;
+                case 3: cogerDelMonton(jug,monton);
+                        puedeCoger=false;
+                        continuar=false;
+                    break;
+            }
+            if(!continuar)
+                System.out.println("se repetiria");
+        } while (!continuar);
             System.out.println("Turno para el siguiente");
-        return true;
+        return false;
     }
+    
+    
     public static void cogerDelMonton(Mano jug,Monton monton){
         int pos=(int) (Math.random()*monton.getNPiezasMonton());
         Pieza pieza= monton.getUnaPiezaMonton(pos);
@@ -96,10 +99,11 @@ public class Domino {
         monton.eliminarPiezaMonton(pieza);
     }
     
-    public static void anhadirFicha(Mano jug, Partida partida){
+    public static boolean anhadirFicha(Mano jug, Partida partida){
         System.out.println(jug);
         int opcion;
         System.out.println(partida);
+        boolean anhadida=true;
         do{
             opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
         }while(opcion>jug.getNPiezas()||opcion<1);
@@ -114,8 +118,10 @@ public class Domino {
                     if(n1==n2 || partida.getPrimera()==partida.getUltima()){//alguna pieza es dolbe
                         
                         if(n1==n2){//es una pieza doble
-                            if(n1!=partida.getPrimera() && n1!= partida.getUltima())
+                            if(n1!=partida.getPrimera() && n1!= partida.getUltima()){
                                 System.out.println("No ha sido posible insertar la pieza");
+                                anhadida=false;
+                            }
                             else{
                                 if(n1==partida.getPrimera()){
                                     partida.insertarPrincipio(pieza);
@@ -156,8 +162,11 @@ public class Domino {
                                 }
                                 jug.eliminarPieza(pieza);
                             }
-                            else
+                            else{
                                 System.out.println("La pieza no tiene coincidencias.");
+                                anhadida=false;
+                            }
+                                
                         }
                     }
                     //ninguna pieza es doble
@@ -179,8 +188,12 @@ public class Domino {
                         }
                         jug.eliminarPieza(pieza);
                     }
-                    else System.out.println("No ha sido posible introducir la pieza.");       
+                    else {
+                        System.out.println("No ha sido posible introducir la pieza.");
+                        anhadida=false;
+                    }       
         }
+        return anhadida;
     }
         
         
@@ -228,7 +241,6 @@ public class Domino {
                 pieza=todas.getUnaPiezaMonton(pos);
                     jugadores[i].setUnaPieza(pieza);
                     todas.eliminarPiezaMonton(pieza);
-                    System.out.println("hemos lelgado ya? - i->"+i+" j-> "+j);
             }
             
             

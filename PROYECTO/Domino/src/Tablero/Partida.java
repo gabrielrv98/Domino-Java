@@ -13,6 +13,7 @@ import piezas.Pieza;
 public class Partida {
     private Nodo primero;
     private Nodo ultimo;
+    private Nodo nuevo;
     private int numNodos;
     
     public Partida(){
@@ -29,12 +30,14 @@ public class Partida {
         Nodo nuevo= new Nodo(pieza,primero.getSig(),primero);
         primero.getSig().setAnt(nuevo);
         primero.setSig(nuevo);
+        this.nuevo=nuevo;
         numNodos++;
     }
     public void insertarFinal(Pieza pieza){
         Nodo nuevo= new Nodo(pieza, ultimo,ultimo.getAnt());
         ultimo.getAnt().setSig(nuevo);
         ultimo.setAnt(nuevo);
+        this.nuevo=nuevo;
         numNodos++;
     }
     public int getPrimera(){
@@ -55,9 +58,20 @@ public class Partida {
         }
         else{
             Nodo actual=primero.getSig();
+            int cont=0;
             toret.append("->");
             for (int i = 0; i < numNodos; i++) {
-                toret.append(actual.getValor());
+                cont++;
+                if(actual==nuevo){
+                    toret.append("\033[34m");
+                    toret.append(actual.getValor());
+                    toret.append("\033[30m");
+                }
+                else toret.append(actual.getValor());
+                if(cont==8){
+                    cont=0;
+                    toret.append("\n");
+                }
                 if(actual.getSig()!=ultimo)
                     toret.append(" - ");
                 actual=actual.getSig();
