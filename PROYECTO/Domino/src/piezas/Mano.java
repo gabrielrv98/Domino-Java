@@ -14,13 +14,20 @@ public class Mano {
     private int nPiezas;
     private Pieza[] piezas;
     private String nombre;
+    private boolean puedeJugar;
     
     public Mano(String name){
         nombre=name;
         piezas= new Pieza[PIEZAS_MANO];
         nPiezas=0;
+        puedeJugar=true;
         //que piezas obtienes
     }
+    
+    public void setPuedeJugar(boolean yn){
+        puedeJugar=yn;
+    }
+    
     public void setUnaPieza(Pieza pieza){
         piezas[nPiezas]=pieza;
         nPiezas++;
@@ -28,6 +35,10 @@ public class Mano {
     
     public int getPIEZAS_MANO(){   
         return PIEZAS_MANO;
+    }
+    
+    public Pieza getUnaPieza(int n){
+        return piezas[n];
     }
     
     public int getNPiezas(){
@@ -47,4 +58,6 @@ public class Mano {
         }
         return toret.toString();
     }
+
+    
 }

@@ -7,6 +7,7 @@ package domino;
 import input.Excepciones;
 import piezas.*;
 import java.util.*;
+import Tablero.*;
 /**
  *
  * @author grvidal
@@ -37,8 +38,69 @@ public class Domino {
             System.out.println("No quedan piezas en el monton");
         System.out.println("El jugador1 ( "+ jugadores[0].getNombre()+" ) tiene en la mano: ");
         System.out.println(jugadores[0]); 
+        Partida partida = new Partida();
+        int carro=1;
+        int actual=carro;
+        boolean puedeJugar=true;
+        int cont=0;//borrar
+        int turno;
+        do {
+            System.out.println("juega: "+actual);
+            puedeJugar=jugada(todas,jugadores[actual],partida);
+            if(jugadores[actual].getNPiezas()==0)
+                System.out.println("El Jugador "+actual+ " ha ganado, gg.");//ha Ganado.
+            cont++;//borrar
+            if(cont==2)//borrar
+                puedeJugar=false;
+            actual= turno(actual,jugadores.length-1);
+            
+        } while (puedeJugar);
+    }
+    
+    public static  boolean jugada(Monton monton,Mano jug, Partida partida){
+        System.out.println(jug);
+        int opcion;
+        int maxOpciones=2;
+        System.out.println("Eligue que hacer:"
+                    + "\n1.-Jugar una ficha."
+                    + "\n2.-Pasar");
+            if(monton.getNPiezasMonton()>0){
+                System.out.println("3.-Coger una ficha del monton.");
+                maxOpciones=3;
+            }
+        do {
+            opcion=Excepciones.introducirNumero("Opcion: ");
+        } while (opcion>maxOpciones || opcion<0);
+        switch (opcion){
+            case 1: anhadirFicha(jug,partida);
+                break;
+            case 2: //pasar(); 
+                break;
+            case 3: //cogerDelMonton(jug,partida);
+                break;
+                
+        }
         
-        
+        return true;
+    }
+    
+    public static void anhadirFicha(Mano jug, Partida partida){
+        System.out.println(jug);
+        int opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
+        Pieza pieza=jug.getUnaPieza(opcion-1);
+        int n1=pieza.getN1();
+        int n2=pieza.getN2();
+        if(partida.getNumNodos()==0){
+            partida.
+        }
+    }
+    
+    public static  int turno(int actual, int numJug){
+        if (actual==numJug) 
+            actual=0;
+        else 
+            actual++;
+        return actual;
     }
     
     public static int nJugadores(){ //Confirma el numero de jugadores entre 2 y 4.
@@ -77,8 +139,7 @@ public class Domino {
                     jugadores[i].setUnaPieza(pieza);
                     todas.eliminarPiezaMonton(pieza);
                 }
-                else 
-                    j--;
+                else j--;
             }
             
             
