@@ -58,16 +58,20 @@ public class Domino {
             System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+!fin);
             jugada(todas,jugadores[actual],partida,ajustes);
             System.out.println(partida);
-            if(jugadores[actual].getNPiezas()==0){
+            System.out.println("lo de arriba es imp??");
+            if(jugadores[actual].getNPiezas()==0){//editado
                  System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
                  fin=true;
             }
-            fin=sePuedeSeguir(jugadores);//falta testeo
+            else fin=sePuedeSeguir(jugadores);//falta testeo
             actual= turno(actual,jugadores.length-1);
         } while (!fin);
+        for (int i = 0; i < jugadores.length; i++) {
+            
+        }
     }
     
-    public static boolean sePuedeSeguir(Mano [] jugadores){//falta testeo
+    public static boolean sePuedeSeguir(Mano [] jugadores){//falta testeo//fallo1
         boolean toret=false;
         int n=0;
         while(n<jugadores.length && !jugadores[n].getPuedeJugar())
