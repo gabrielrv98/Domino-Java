@@ -51,9 +51,12 @@ public class Domino {
             if (partida.getNumNodos()!=0) {
                 if(todas.getNPiezasMonton()>0){//aun puede coger cartas
                     fin=false;
-                    System.out.println("Quedan cartas");
+                    System.out.println("Quedan piezas en el monton.");
                 } 
-                else jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));//se comprueba si puede
+                else {
+                    System.out.println("no quedan piezas, se ejecuta comprobar");
+                    jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));
+                }//se comprueba si puede
             }
             System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+!fin);
             jugada(todas,jugadores[actual],partida,ajustes);
@@ -115,16 +118,23 @@ public class Domino {
             System.out.println("Turno para el siguiente");
     }
     
-    public static boolean comprobar(Mano jug,Partida partida){//devuelve false si no puede
+    public static boolean comprobar(Mano jug,Partida partida){//devuelve false si no puede//error
         int n=0;
-        boolean toret=false;
+        boolean toret;
         int n1=partida.getPrimera();
         int n2=partida.getUltima();
         while(n<jug.getNPiezas() && (jug.getUnaPieza(n).getN1()!=n1 && jug.getUnaPieza(n).getN1()!=n2 
                 && jug.getUnaPieza(n).getN2()!=n1 && jug.getUnaPieza(n).getN2()!=n2))
             n++;
-        if (n==jug.getNPiezas())
+        if (n==jug.getNPiezas()){
+            toret=false;
+            System.out.println("n==ultima pieza, no podria jugar");
+        }
+            
+        else{
             toret=true;
+            System.out.println(jug.getUnaPieza(n));
+        }
         return toret;
     }
     
@@ -159,7 +169,7 @@ public class Domino {
                         
                         if(n1==n2){//es una pieza doble
                             if(n1!=partida.getPrimera() && n1!= partida.getUltima()){
-                                System.out.println("No ha sido posible insertar la pieza");
+                                System.out.println("La pieza no tiene coincidencias.");
                                 anhadida=false;
                             }
                             else{
@@ -210,9 +220,9 @@ public class Domino {
                         }
                     }
                     //ninguna pieza es doble
-                    else if (n1==partida.getPrimera() || n1== partida.getUltima() 
+                    else if (n1==partida.getPrimera() || n1== partida.getUltima()
                             || n2==partida.getPrimera() || n2== partida.getUltima() ){//si se cumple la pieza se puede colocar en algun lugar
-                        if(n1==partida.getPrimera() || n1== partida.getUltima()){
+                        if(n1==partida.getPrimera() || n1== partida.getUltima()){//n1 a1 / n2 a2 y n1 a2 n2 a1
                             if(n1==partida.getPrimera()){
                                 pieza.invertirPieza();
                                 partida.insertarPrincipio(pieza);
@@ -229,7 +239,7 @@ public class Domino {
                         jug.eliminarPieza(pieza);
                     }
                     else {
-                        System.out.println("No ha sido posible introducir la pieza.");
+                        System.out.println("La pieza no tiene coincidencias.");
                         anhadida=false;
                     }       
         }
