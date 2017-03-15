@@ -62,10 +62,19 @@ public class Domino {
                  System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
                  fin=true;
             }
-               
+            fin=sePuedeSeguir(jugadores);//falta testeo
             actual= turno(actual,jugadores.length-1);
-            
         } while (!fin);
+    }
+    
+    public static boolean sePuedeSeguir(Mano [] jugadores){//falta testeo
+        boolean toret=false;
+        int n=0;
+        while(n<jugadores.length && !jugadores[n].getPuedeJugar())
+            n++;
+        if(n==jugadores.length)
+            toret=true;
+        return toret;
     }
     
     public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){

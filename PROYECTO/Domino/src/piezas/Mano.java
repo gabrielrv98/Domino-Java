@@ -27,6 +27,10 @@ public class Mano {
         puedeJugar=yn;
     }
     
+    public boolean getPuedeJugar(){
+        return puedeJugar;
+    }
+    
     public void setUnaPieza(Pieza pieza){
         piezas[nPiezas]=pieza;
         nPiezas++;
