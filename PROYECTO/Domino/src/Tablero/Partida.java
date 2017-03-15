@@ -41,12 +41,10 @@ public class Partida {
         numNodos++;
     }
     public int getPrimera(){
-        Nodo actual=primero.getSig();
-        return actual.getValor().getN1();
+        return primero.getSig().getValor().getN1();
     }
     public int getUltima(){
-        Nodo actual=ultimo.getAnt();
-        return actual.getValor().getN2();
+        return ultimo.getAnt().getValor().getN2();
     }
     
     @Override

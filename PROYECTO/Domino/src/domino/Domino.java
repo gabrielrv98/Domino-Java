@@ -8,20 +8,22 @@ import input.Excepciones;
 import piezas.*;
 import java.util.*;
 import Tablero.*;
+import Settings.Ajustes;
 /**
  *
  * @author grvidal
  */
 public class Domino {
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Ajustes ajustes= new Ajustes();
         System.out.println("\t\tBienvenido a appDomino G&G");
         intro();
         Monton todas= new Monton();
         Mano[] jugadores=new Mano[nJugadores()];
+        ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
         //meter para jugar vs ia;
         int maxPiezasMano=todas.getNPiezasTotales()/jugadores.length;
         System.out.println("Jugadores humanos: "+jugadores.length);
@@ -40,17 +42,21 @@ public class Domino {
         Partida partida = new Partida();
         int carro=1;
         int actual=carro;
-        boolean fin;
+        boolean fin=false;
         int turno;
         System.out.println("--------------------------------------");
         do {
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
             //comprobar si puedo seguir
-            if(todas.getNPiezasMonton()>0)//aun puede coger cartas
-                fin=false;
-            else fin=comprobar(jugadores[actual],partida);//no puede y se comprueba si alguna
-            jugada(todas,jugadores[actual],partida);
-            fin=false;
+            if (partida.getNumNodos()!=0) {
+                if(todas.getNPiezasMonton()>0){//aun puede coger cartas
+                    fin=false;
+                    System.out.println("Quedan cartas");
+                } 
+                else jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));//se comprueba si puede
+            }
+            System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+!fin);
+            jugada(todas,jugadores[actual],partida,ajustes);
             System.out.println(partida);
             if(jugadores[actual].getNPiezas()==0){
                  System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
@@ -62,14 +68,13 @@ public class Domino {
         } while (!fin);
     }
     
-    public static  void jugada(Monton monton,Mano jug, Partida partida){
+    public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
         System.out.println(jug);
         final int MAX_VECES_COGER =1;
         int opcion;
         int maxOpciones=2;
         int vecesCogidas=0;
         boolean continuar;
-        boolean toret=false;
         do {
             continuar=true;
             System.out.println("\t\tEligue que hacer:"
@@ -83,7 +88,7 @@ public class Domino {
                 opcion=Excepciones.introducirNumero("\nOpcion: ");
             } while (opcion>maxOpciones || opcion<0);
             switch (opcion){
-                case 1: continuar = anhadirFicha(jug,partida);
+                case 1: continuar = anhadirFicha(jug,partida,ajustes);
                         break;
                 case 2:
                     break;
@@ -93,19 +98,21 @@ public class Domino {
                         continuar=false;
                     break;
             }
-            if(!continuar)
-                System.out.println("se repetiria");
         } while (!continuar);
             System.out.println("Turno para el siguiente");
     }
     
-    public static boolean comprobar(Mano jug,Partida partida){
+    public static boolean comprobar(Mano jug,Partida partida){//devuelve false si no puede
         int n=0;
+        boolean toret=false;
         int n1=partida.getPrimera();
         int n2=partida.getUltima();
-        
-        
-        return false;
+        while(n<jug.getNPiezas() && (jug.getUnaPieza(n).getN1()!=n1 && jug.getUnaPieza(n).getN1()!=n2 
+                && jug.getUnaPieza(n).getN2()!=n1 && jug.getUnaPieza(n).getN2()!=n2))
+            n++;
+        if (n==jug.getNPiezas())
+            toret=true;
+        return toret;
     }
     
     public static void cogerDelMonton(Mano jug,Monton monton){
@@ -115,8 +122,12 @@ public class Domino {
         monton.eliminarPiezaMonton(pieza);
     }
     
-    public static boolean anhadirFicha(Mano jug, Partida partida){
-        System.out.println(jug);
+    public static boolean anhadirFicha(Mano jug, Partida partida, Ajustes ajustes){
+        if(ajustes.getAyuda()){
+            //debuelbe en un array con true las cartas que se pueden jugar
+        }else System.out.println(jug);
+            
+        
         int opcion;
         System.out.println(partida);
         boolean anhadida=true;

@@ -56,4 +56,21 @@ public class Excepciones {
         return toret;
         
     }
+    
+    public static boolean introducirBoolean(String aux){
+        boolean toret=false;
+        int opcion;
+        System.out.println(aux);
+        do {
+            System.out.println("1.-Sí.\n2.-No.");
+            opcion=introducirNumero("Opcion: ");
+        } while (opcion>2 || opcion<1);
+        switch (opcion){
+            case 1:toret=true;
+                break;
+            case 2: toret=false;
+                break;
+        }
+        return toret;
+    }
 }

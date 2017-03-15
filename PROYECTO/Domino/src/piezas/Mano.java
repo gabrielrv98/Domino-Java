@@ -21,7 +21,6 @@ public class Mano {
         piezas= new Pieza[maxPiezasMano];
         nPiezas=0;
         puedeJugar=true;
-        //que piezas obtienes
     }
     
     public void setPuedeJugar(boolean yn){
@@ -61,13 +60,30 @@ public class Mano {
         }
     }
     
-    @Override
     public String toString(){
         StringBuilder toret= new StringBuilder();
         for (int i = 0; i < nPiezas; i++) {
             toret.append(i+1);
             toret.append(piezas[i]);
             toret.append("\n");
+        }
+        return toret.toString();
+    }
+    public String toString(boolean[] puedeJugar){
+       StringBuilder toret= new StringBuilder();
+        for (int i = 0; i < nPiezas; i++) {
+            if(puedeJugar[i]){
+                toret.append("\033[32m");
+                toret.append(i+1);
+                toret.append(piezas[i]);
+                toret.append("\033[30m");
+                toret.append("\n");
+            }else{
+                toret.append(i+1);
+            toret.append(piezas[i]);
+            toret.append("\n");
+            }
+            
         }
         return toret.toString();
     }
