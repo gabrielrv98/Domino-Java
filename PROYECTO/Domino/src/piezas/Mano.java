@@ -15,7 +15,11 @@ public class Mano {
     private Pieza[] piezas;
     private String nombre;
     private boolean puedeJugar;
-    
+    /**
+     * 
+     * @param name nombre del jugador
+     * @param maxPiezasMano editar esto.!
+     */
     public Mano(String name, int maxPiezasMano){
         nombre=name;
         //piezas= new Pieza[(maxPiezasMano+2)];///editar, la cuenta esta mal echa en relacion como se reparten las piezas
@@ -24,26 +28,62 @@ public class Mano {
         puedeJugar=true;
     }
     
+    /**
+     *  
+     * @param yn si hay piezas en el monton es true, sino mira si hay coincidencias con el tablero
+     */
     public void setPuedeJugar(boolean yn){
         puedeJugar=yn;
     }
     
+    /**
+     *  devuelve el valor de la variable puedeJugar
+     * @return booleano (true si puede jugar)
+     */
     public boolean getPuedeJugar(){
         return puedeJugar;
     }
-    
+    /**
+     * Se le añade a la mano del jugador la pieza pasada por el parametro
+     * @param pieza una pieza del monton 
+     */
     public void setUnaPieza(Pieza pieza){
         piezas[nPiezas]=pieza;
         nPiezas++;
     }
-    
+    /**
+     * 
+     * @return el numero de piezas con las que se inicializa
+     * @deprecated
+     */
     public int getPIEZAS_MANO(){   
         return PIEZAS_MANO;
     }
     
+    /**
+     * 
+     * @param n la posicion de la pieza que se quiere obtener
+     * @return la pieza que esta en la poscion n
+     */
     public Pieza getUnaPieza(int n){
         return piezas[n];
     }
+    
+    /**
+     * suma ambos lados de todas las piezas y las devuelve
+     * @return la puntuacion del jugador
+     */
+    public int getPuntuacion(){
+        int toret=0;
+        for (int i = 0; i < nPiezas; i++) {
+            toret+=piezas[i].getN1()+piezas[i].getN2();
+        }
+        return toret;
+    }
+    /**
+     * 
+     * @return numero de piezas que el jugador tiene en la mano
+     */
     
     public int getNPiezas(){
         return nPiezas;

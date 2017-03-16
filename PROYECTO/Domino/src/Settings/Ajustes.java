@@ -11,9 +11,13 @@ package Settings;
  */
 public class Ajustes {
     boolean ayuda;
+    public static final int MAX_NUMERO=3;
     
     public Ajustes(){
-        
+    }
+    
+    public int getMAX_NUMERO(){//meter en su respectivo hueco.
+        return MAX_NUMERO;
     }
     
     public void setAyuda(boolean yn){
