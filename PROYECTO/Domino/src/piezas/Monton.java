@@ -10,7 +10,7 @@ package piezas;
  * @author reyga
  */
 public class Monton {
-    private static final int MAX_NUMERO=6;
+    private static final int MAX_NUMERO=3;
     private Pieza[] todas;
     private Pieza[] monton;
     private int nPiezasMonton;

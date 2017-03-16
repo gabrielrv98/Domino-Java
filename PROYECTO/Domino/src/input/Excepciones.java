@@ -73,4 +73,8 @@ public class Excepciones {
         }
         return toret;
     }
+    
+    public static void  cambiarColorRojo(String aux){
+        System.out.println("\033[31m"+aux+"\033[30m");
+    }
 }

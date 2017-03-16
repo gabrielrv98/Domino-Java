@@ -15,6 +15,9 @@ import Settings.Ajustes;
  */
 public class Domino {
     /**
+     * falta meter ayuda
+     *\n
+     * falta meter ia
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -23,7 +26,7 @@ public class Domino {
         intro();
         Monton todas= new Monton();
         Mano[] jugadores=new Mano[nJugadores()];
-        ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
+        //ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
         //meter para jugar vs ia;
         int maxPiezasMano=todas.getNPiezasTotales()/jugadores.length;
         System.out.println("Jugadores humanos: "+jugadores.length);
@@ -51,36 +54,52 @@ public class Domino {
             if (partida.getNumNodos()!=0) {
                 if(todas.getNPiezasMonton()>0){//aun puede coger cartas
                     fin=false;
-                    System.out.println("Quedan piezas en el monton.");
+                    Excepciones.cambiarColorRojo("Quedan piezas en el monton");
                 } 
                 else {
-                    System.out.println("no quedan piezas, se ejecuta comprobar");
+                    Excepciones.cambiarColorRojo("no quedan piezas, se ejecuta comprobar()");
                     jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));
                 }//se comprueba si puede
             }
-            System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+!fin);
+            System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+jugadores[actual].getPuedeJugar());
             jugada(todas,jugadores[actual],partida,ajustes);
             System.out.println(partida);
-            System.out.println("lo de arriba es imp??");
+            Excepciones.cambiarColorRojo("lo de arriba es imp??");
             if(jugadores[actual].getNPiezas()==0){//editado
                  System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
                  fin=true;
             }
-            else fin=sePuedeSeguir(jugadores);//falta testeo
+            else {
+                Excepciones.cambiarColorRojo("Ejecutando sePuedeSeguir");
+                fin=!sePuedeSeguir(jugadores);//falta testeo
+            }
             actual= turno(actual,jugadores.length-1);
         } while (!fin);
         for (int i = 0; i < jugadores.length; i++) {
-            
         }
     }
-    
+    /** 
+     * Analiza la variable puedeJugar de cada jugador
+     * @param jugadores 
+     * @return  devulve TRUE si hay un jugadore que su variable puedeJugar es true
+     *
+     */   
     public static boolean sePuedeSeguir(Mano [] jugadores){//falta testeo//fallo1
-        boolean toret=false;
+        boolean toret;
         int n=0;
         while(n<jugadores.length && !jugadores[n].getPuedeJugar())
             n++;
-        if(n==jugadores.length)
+        if(n==jugadores.length){
+            Excepciones.cambiarColorRojo("n== jugadores.length-> ");
+            System.out.println(jugadores.length);
+            toret=false;
+        }
+            
+        else{
+            Excepciones.cambiarColorRojo("puede jugar como minimo el jug->");
+            System.out.println(jugadores[n].getNombre());;
             toret=true;
+        }
         return toret;
     }
     
@@ -287,10 +306,13 @@ public class Domino {
         Pieza pieza;
         for (int i = 0; i < jugadores.length; i++) {
             for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
-                pos=(int) (Math.random()*todas.getNPiezasMonton());
-                pieza=todas.getUnaPiezaMonton(pos);
-                jugadores[i].setUnaPieza(pieza);
-                todas.eliminarPiezaMonton(pieza);
+                if(todas.getNPiezasMonton()>0){
+                   pos=(int) (Math.random()*todas.getNPiezasMonton());
+                    pieza=todas.getUnaPiezaMonton(pos);
+                    jugadores[i].setUnaPieza(pieza);
+                    todas.eliminarPiezaMonton(pieza); 
+                }
+                
             }
         }
     }
