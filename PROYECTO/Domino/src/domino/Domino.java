@@ -115,11 +115,14 @@ public class Domino {
     }
     
     public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
-        System.out.println(jug);
+        if (ajustes.getAyuda()) 
+            System.out.println(jug.ayuda);
+        else
+            System.out.println(jug);
         System.out.println(partida);
         final int MAX_VECES_COGER =1;
         int opcion;
-        int maxOpciones=2;
+        int maxOpciones;
         int vecesCogidas=0;
         boolean continuar;
         do {
@@ -137,8 +140,9 @@ public class Domino {
             } while (opcion>maxOpciones || opcion<=0);
             
             if(0<opcion && opcion<=jug.getNPiezas()){
+                
                 System.out.println("poniendo ficha...");
-                continuar = anhadirFicha(jug,partida,ajustes);//editando...............................
+                continuar = anhadirFicha(jug,partida,ajustes, opcion);//editando...............................
             }
             else if(opcion==(jug.getNPiezas()+1)){
                 Excepciones.cambiarColorRojo("Pasando...");
@@ -207,19 +211,16 @@ public class Domino {
         monton.eliminarPiezaMonton(pieza);
     }
     
-    public static boolean anhadirFicha(Mano jug, Partida partida, Ajustes ajustes){
-        if(ajustes.getAyuda()){
-            //debuelbe en un array con true las cartas que se pueden jugar
-        }else System.out.println(jug);
-            
-        
+    public static boolean anhadirFicha(Mano jug, Partida partida, Ajustes ajustes,int ficha){
+        boolean anhadida=true;
+    /*     
         int opcion;
         System.out.println(partida);
-        boolean anhadida=true;
         do{
             opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
         }while(opcion>jug.getNPiezas()||opcion<1);
-        Pieza pieza=jug.getUnaPieza(opcion-1);//tengo la pieza selecionada
+    */
+        Pieza pieza=jug.getUnaPieza(ficha-1);//tengo la pieza selecionada
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);
             jug.eliminarPieza(pieza);

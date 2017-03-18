@@ -132,6 +132,14 @@ public class Mano {
         }
         return toret.toString();
     }
+    
+    public String ayuda(){
+        StringBuilder toret= new StringBuilder();
+        for (int i = 0; i < nPiezas; i++) {
+            
+        }
+        return toret.toString();
+    }
 
     
 }

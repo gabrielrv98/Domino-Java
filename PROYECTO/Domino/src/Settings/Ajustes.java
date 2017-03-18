@@ -10,7 +10,7 @@ package Settings;
  * @author reyga
  */
 public class Ajustes {
-    boolean ayuda;
+    public boolean ayuda;
     public static final int MAX_NUMERO=3;
     
     public Ajustes(){
@@ -23,7 +23,7 @@ public class Ajustes {
     public void setAyuda(boolean yn){
         ayuda=yn;
     }
-    public  boolean getAyuda(){
+    public   boolean getAyuda(){
         return ayuda;
     }
 }
