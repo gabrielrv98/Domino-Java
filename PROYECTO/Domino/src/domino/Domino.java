@@ -116,7 +116,7 @@ public class Domino {
     
     public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
         if (ajustes.getAyuda()) 
-            System.out.println(jug.ayuda);
+            System.out.println(jug.ayuda(partida));
         else
             System.out.println(jug);
         System.out.println(partida);

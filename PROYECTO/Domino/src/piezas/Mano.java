@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package piezas;
-
+import  Tablero.*;
 /**
  *
  * @author reyga
@@ -133,10 +133,10 @@ public class Mano {
         return toret.toString();
     }
     
-    public String ayuda(){
+    public String ayuda(Partida partida){
         StringBuilder toret= new StringBuilder();
         for (int i = 0; i < nPiezas; i++) {
-            
+            //si la pieza[i] tiene coincidencias con getPtincipio() o Partida.getFinal() ponerla en amarillo.
         }
         return toret.toString();
     }
