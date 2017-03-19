@@ -10,7 +10,6 @@ import  Tablero.*;
  * @author reyga
  */
 public class Mano {
-    private static final int PIEZAS_MANO=7;
     private int nPiezas;
     private Pieza[] piezas;
     private String nombre;
@@ -51,15 +50,7 @@ public class Mano {
         piezas[nPiezas]=pieza;
         nPiezas++;
     }
-    /**
-     * 
-     * @return el numero de piezas con las que se inicializa
-     * @deprecated
-     */
-    public int getPIEZAS_MANO(){   
-        return PIEZAS_MANO;
-    }
-    
+        
     /**
      * 
      * @param n la posicion de la pieza que se quiere obtener

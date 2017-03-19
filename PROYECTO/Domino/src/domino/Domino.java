@@ -28,7 +28,7 @@ public class Domino {
         Mano[] jugadores=new Mano[nJugadores()];
         //ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
         //meter para jugar vs ia;
-        int maxPiezasMano=todas.getNPiezasTotales()/jugadores.length;
+        int maxPiezasMano=todas.getNPiezasTotales()-(Ajustes.PIEZAS_MANO*jugadores.length);
         System.out.println("Jugadores humanos: "+jugadores.length);
         for (int i = 0; i < jugadores.length; i++) {
             String aux=("Introduce el nombre del jugador "+(i+1)+": ");
@@ -349,7 +349,7 @@ public class Domino {
         int pos;
         Pieza pieza;
         for (int i = 0; i < jugadores.length; i++) {
-            for (int j = 0; j < jugadores[i].getPIEZAS_MANO(); j++) {
+            for (int j = 0; j < Ajustes.PIEZAS_MANO; j++) {
                 if(todas.getNPiezasMonton()>0){
                    pos=(int) (Math.random()*todas.getNPiezasMonton());
                     pieza=todas.getUnaPiezaMonton(pos);
