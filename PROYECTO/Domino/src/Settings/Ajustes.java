@@ -13,18 +13,24 @@ public class Ajustes {
     public boolean ayuda;
     public static final int MAX_NUMERO=3;
     public static final int PIEZAS_MANO=7;
+    public  int carro;
     
     public Ajustes(){
+        carro=1;
     }
-    
-    public int getMAX_NUMERO(){//meter en su respectivo hueco.
-        return MAX_NUMERO;
-    }
-    
+ 
     public void setAyuda(boolean yn){
         ayuda=yn;
     }
+    
     public   boolean getAyuda(){
         return ayuda;
+    }
+    
+    public void setCarro(int n){
+        carro=n;
+    }
+    public int getCarro(){
+        return carro;
     }
 }

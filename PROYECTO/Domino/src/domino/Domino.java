@@ -3,6 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+/*
+ * Pasar Carro a Ajustes
+ * Arreglar añadir ficha
+ * Acabar obtener puntucauin ( quienHaGanado())
+ */
 package domino;
 import input.Excepciones;
 import piezas.*;
@@ -28,7 +34,7 @@ public class Domino {
         Mano[] jugadores=new Mano[nJugadores()];
         //ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
         //meter para jugar vs ia;
-        int maxPiezasMano=todas.getNPiezasTotales()-(Ajustes.PIEZAS_MANO*jugadores.length);
+        int maxPiezasMano=todas.getNPiezasTotales()-(Ajustes.PIEZAS_MANO*(jugadores.length-1));
         System.out.println("Jugadores humanos: "+jugadores.length);
         for (int i = 0; i < jugadores.length; i++) {
             String aux=("Introduce el nombre del jugador "+(i+1)+": ");
@@ -43,10 +49,10 @@ public class Domino {
         else
             System.out.println("No quedan piezas en el monton");
         Partida partida = new Partida();
-        int carro=1;
+        int carro=0;
         int actual=carro;
-        boolean fin=false;
-        int turno;
+        boolean fin;
+        //int turno;
         System.out.println("--------------------------------------");
         do {//La partida ha empezado
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
@@ -63,8 +69,6 @@ public class Domino {
             }
             System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+jugadores[actual].getPuedeJugar());
             jugada(todas,jugadores[actual],partida,ajustes);
-            //System.out.println(partida);
-            //Excepciones.cambiarColorRojo("lo de arriba es imp??");
             if(jugadores[actual].getNPiezas()==0){
                  fin=true;
             }
@@ -74,20 +78,38 @@ public class Domino {
                 actual= turno(actual,jugadores.length-1);
             }
         } while (!fin);
-        
-        //lo de abajo deberia meterlo en un metodo
-        if(jugadores[actual].getNPiezas()==0){
-            System.out.println("El Jugador "+jugadores[actual].getNombre()+ " ha ganado, gg.");//ha Ganado.
-        }
-        else{
-            int puntos=Integer.MAX_VALUE;//editar y saber si funciona.
-            for (int i = 0; i < jugadores.length; i++) {
-                if(jugadores[i].getPuntuacion()<=puntos)
-                    puntos=jugadores[i].getPuntuacion();
-                    
-                
+        int ganador=quienHaGanado(jugadores, actual,carro);
+        System.out.println("\u001B[34mY el GANADOR ES....");
+        System.out.println("\t\tEl jugador nº- "+ganador+": "+jugadores[ganador].getNombre()+"\u001B[30m");
+        System.out.println("Esto deberia ser negro-");
+    }
+    
+    /**
+     * primero mira si al ultimo jugador le quedaban fichas y luego  quien tiene menor puntos
+     * @param jugadores los jugadores de la partida
+     * @param actual el ultimo jugador que ha jugado
+     * @return la posicion del ganador en el array de jugadores
+     */
+    public  static int quienHaGanado(Mano[] jugadores, int actual,int carro){
+        if(jugadores[actual].getNPiezas()!=0){
+            //editar y saber si funciona.
+            actual=0;
+            for (int i = 1; i < jugadores.length; i++) {
+                if(jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()){//Esto no esta optimizado ni de broma
+                    if(i==carro)
+                        actual=i;
+                    else if(actual==carro){
+                        
+                    }
+                    else{
+                        //la has liado hay dos tios con puntuaciones iguales y ninguno es carro
+                    }
+                }
+                if(jugadores[i].getPuntuacion()<=jugadores[actual].getPuntuacion())
+                    actual=i;
             }
         }
+        return actual;
     }
     /** 
      * Analiza la variable puedeJugar de cada jugador
@@ -95,20 +117,16 @@ public class Domino {
      * @return  devulve TRUE si hay un jugadore que su variable puedeJugar es true
      *
      */   
-    public static boolean sePuedeSeguir(Mano [] jugadores){//falta testeo//fallo1
+    public static boolean sePuedeSeguir(Mano [] jugadores){
         boolean toret;
         int n=0;
         while(n<jugadores.length && !jugadores[n].getPuedeJugar())
             n++;
         if(n==jugadores.length){
-            Excepciones.cambiarColorRojo("n== jugadores.length-> ");
-            System.out.println(jugadores.length);
             toret=false;
         }
             
         else{
-            Excepciones.cambiarColorRojo("puede jugar como minimo el jug->");
-            System.out.println(jugadores[n].getNombre());
             toret=true;
         }
         return toret;
@@ -142,12 +160,12 @@ public class Domino {
             if(0<opcion && opcion<=jug.getNPiezas()){
                 
                 System.out.println("poniendo ficha...");
-                continuar = anhadirFicha(jug,partida,ajustes, opcion);//editando...............................
+                continuar = anhadirFicha(jug,partida,ajustes, opcion);//pone una ficha
             }
             else if(opcion==(jug.getNPiezas()+1)){
-                Excepciones.cambiarColorRojo("Pasando...");
+                Excepciones.cambiarColorRojo("Pasando...");//Pasa turno
             }
-            else if(opcion==(jug.getNPiezas()+2)){
+            else if(opcion==(jug.getNPiezas()+2)){//Coge una ficha del monton, y vuelve a ofrecer la opcion 1 y 2
                 cogerDelMonton(jug,monton);
                         System.out.println(jug);
                         System.out.println(partida);
@@ -157,30 +175,6 @@ public class Domino {
             }
             else System.out.println("no entro en ninguno");
         } while (!continuar);
-    /*    
-        do {
-            continuar=true;
-            System.out.println("\t\tEligue que hacer:"
-                        + "\n1.- Poner una ficha en el tablero."
-                        + "\n2.- Pasar");
-            if(monton.getNPiezasMonton()>0 && vecesCogidas<MAX_VECES_COGER){
-                System.out.println("3.- Coger una ficha del monton.");
-                maxOpciones=3;
-            }
-            
-            switch (opcion){
-                case 1: continuar = anhadirFicha(jug,partida,ajustes);
-                        break;
-                case 2:
-                    break;
-                case 3: cogerDelMonton(jug,monton);
-                        System.out.println(jug);
-                        vecesCogidas++;
-                        continuar=false;
-                    break;
-            }
-        } while (!continuar);
-    */
             System.out.println("Turno para el siguiente");
     }
     
@@ -213,13 +207,7 @@ public class Domino {
     
     public static boolean anhadirFicha(Mano jug, Partida partida, Ajustes ajustes,int ficha){
         boolean anhadida=true;
-    /*     
-        int opcion;
-        System.out.println(partida);
-        do{
-            opcion=Excepciones.introducirNumero("Que pieza deseas jugar: ");
-        }while(opcion>jug.getNPiezas()||opcion<1);
-    */
+    
         Pieza pieza=jug.getUnaPieza(ficha-1);//tengo la pieza selecionada
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);

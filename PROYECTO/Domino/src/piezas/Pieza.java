@@ -18,14 +18,25 @@ public class Pieza {
         this.n2=n2;
     }
 
+    /**
+     * 
+     * @return primer numero de la ficha
+     */
     public int getN1() {
         return n1;
     }
-
+    
+    /**
+     * 
+     * @return segundo numero de la ficha
+     */
     public int getN2() {
         return n2;
     }
-    
+    /**
+     * invierte el orden de los numeros de la ficha 
+     * con el fin de mostrarla por pantalla
+     */
     public void invertirPieza(){
         int aux=n1;
         n1=n2;

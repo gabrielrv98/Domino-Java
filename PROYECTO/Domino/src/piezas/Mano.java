@@ -21,8 +21,7 @@ public class Mano {
      */
     public Mano(String name, int maxPiezasMano){
         nombre=name;
-        //piezas= new Pieza[(maxPiezasMano+2)];///editar, la cuenta esta mal echa en relacion como se reparten las piezas
-        piezas= new Pieza[(50)];
+        piezas= new Pieza[(maxPiezasMano)];
         nPiezas=0;
         puedeJugar=true;
     }
