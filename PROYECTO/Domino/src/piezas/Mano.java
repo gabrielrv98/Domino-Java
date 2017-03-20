@@ -5,6 +5,8 @@
  */
 package piezas;
 import  Tablero.*;
+import domino.Juego;
+import input.Excepciones;
 /**
  *
  * @author reyga
@@ -104,29 +106,31 @@ public class Mano {
         }
         return toret.toString();
     }
-    public String toString(boolean[] puedeJugar){
-       StringBuilder toret= new StringBuilder();
-        for (int i = 0; i < nPiezas; i++) {
-            if(puedeJugar[i]){
-                toret.append("\033[32m");
-                toret.append(i+1);
-                toret.append(piezas[i]);
-                toret.append("\033[30m");
-                toret.append("\n");
-            }else{
-                toret.append(i+1);
-            toret.append(piezas[i]);
-            toret.append("\n");
-            }
-            
-        }
-        return toret.toString();
-    }
     
+    /**
+     * si la pieza tiene coincidencias con getPtincipio() o Partida.getFinal() se pone en verde.
+     * @param partida Partida actual
+     * @return una Cadena, en verde o negro.
+     */
     public String ayuda(Partida partida){
         StringBuilder toret= new StringBuilder();
         for (int i = 0; i < nPiezas; i++) {
-            //si la pieza[i] tiene coincidencias con getPtincipio() o Partida.getFinal() ponerla en amarillo.
+            if(partida.getNumNodos()!=0){
+                if(Juego.coincidencias(partida, piezas[i])){
+                    toret.append(Excepciones.cambiarColorVerde((i+1)));//Esto no es la cadena que quiero.
+                    toret.append(Excepciones.cambiarColorVerde(piezas[i].toString()));
+                }
+                else{
+                    toret.append(i+1);
+                    toret.append(piezas[i]);
+                }
+            }
+            else{
+                toret.append(i+1);
+                toret.append(piezas[i]);
+            }
+            
+            toret.append("\n");
         }
         return toret.toString();
     }

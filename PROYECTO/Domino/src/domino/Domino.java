@@ -6,7 +6,6 @@
 
 /*
  * Pasar constantes a Ajustes (carro...)
- * Carro seleccionado por pieza diferente.
  * Arreglar añadir ficha
  * falta meter ia
  * falta meter ayuda
@@ -32,7 +31,7 @@ public class Domino {
         intro();
         Monton todas= new Monton();
         Mano[] jugadores=new Mano[nJugadores()];
-        //ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
+        ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
         //meter para jugar vs ia;
         int maxPiezasMano=todas.getNPiezasTotales()-(Ajustes.PIEZAS_MANO*(jugadores.length-1));
         System.out.println("Jugadores humanos: "+jugadores.length);
@@ -82,26 +81,25 @@ public class Domino {
      * 
      * @param jug Jugadores en la partida
      * @param partida Partida en curso
-     * @return devuelve FALSE si el jugador no puede jugar ninguna opcion
+     * @return devuelve FALSE si el jugador no puede jugar ninguna opcion/TRUE si la pieza puede ser colocada
      */
-    public static boolean comprobar(Mano jug,Partida partida){////error
+    public static boolean comprobar(Mano jug,Partida partida){//falta testeo
         int n=0;
-        boolean toret;
-        int n1=partida.getPrimera();
-        int n2=partida.getUltima();
-        while(n<jug.getNPiezas() && (jug.getUnaPieza(n).getN1()!=n1 && jug.getUnaPieza(n).getN1()!=n2 
-                && jug.getUnaPieza(n).getN2()!=n1 && jug.getUnaPieza(n).getN2()!=n2))
+        while(n<jug.getNPiezas() && !coincidencias(partida,jug.getUnaPieza(n)))
             n++;
-        if (n==jug.getNPiezas()){
-            toret=false;
-            System.out.println("n==ultima pieza, no podria jugar");
-        }
-            
-        else{
-            toret=true;
-            System.out.println(jug.getUnaPieza(n));
-        }
-        return toret;
+        return !(n==jug.getNPiezas());
+        
+    }
+    /**
+     * 
+     * @param partida Partida actual    
+     * @param pieza Pieza a comprobar si tiene coincidencias
+     * @return TRUE si la ficha se puede situar en alguno de los extremos del tablero
+     */
+    public static boolean coincidencias(Partida partida, Pieza pieza){
+        return   pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
+                ||pieza.getN2()==partida.getPrimera() || pieza.getN1()==partida.getUltima();
+        
     }
     
     /**

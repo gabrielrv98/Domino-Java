@@ -102,5 +102,8 @@ public class Excepciones {
      public static void  cambiarColorAzul(String aux,int n1, String aux1){
         System.out.println("\033[34m"+aux+n1+aux1+"\033[30m");
     }
-    
+    public static String cambiarColorVerde(String aux){
+        return ("\033[32m"+aux+"\033[30m");
+    }
+     
 }

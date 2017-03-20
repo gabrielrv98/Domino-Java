@@ -8,6 +8,7 @@ package domino;
 import Settings.Ajustes;
 import Tablero.Partida;
 import static domino.Domino.cogerDelMonton;
+import static domino.Domino.coincidencias;
 import input.Excepciones;
 import piezas.*;
 
@@ -58,7 +59,8 @@ public class Juego {
         while(numeroDoble>=0){
             while(n<jug.length){
                 int f=0;
-                while( f<jug[n].getNPiezas() && (jug[n].getUnaPieza(f).getN1()!=numeroDoble || jug[n].getUnaPieza(f).getN2()!=numeroDoble))
+                while( f<jug[n].getNPiezas() && 
+                        (jug[n].getUnaPieza(f).getN1()!=numeroDoble || jug[n].getUnaPieza(f).getN2()!=numeroDoble))
                     f++;
                 
                 if(f<jug[n].getNPiezas()){
@@ -69,8 +71,6 @@ public class Juego {
                     numeroDoble=-10;
                 
                 }
-                
-                else System.out.println("no se  que ha pasado");
                 n++;
             }
             numeroDoble--;
@@ -80,7 +80,6 @@ public class Juego {
             System.out.println("No se ha encontrado ningun jugador con alguna pieza doble.\n"
                     + "Empieza el jugador "+toret);
         }
-        System.out.println("llege hasta qui");
         return toret;
     }
     
@@ -104,7 +103,7 @@ public class Juego {
         boolean continuar;
         do {
             continuar=true;
-            Excepciones.cambiarColorRojo("\t\tEligue que hacer:");
+            Excepciones.cambiarColorRojo("\t\tElige que hacer:");
             System.out.println("(1-"+jug.getNPiezas()+")-Poner una ficha en el tablero.");
             System.out.println((jug.getNPiezas()+1)+".- Pasar");
             maxOpciones=(jug.getNPiezas()+1);
@@ -119,7 +118,10 @@ public class Juego {
             if(0<opcion && opcion<=jug.getNPiezas()){
                 
                 System.out.println("poniendo ficha...");
-                continuar = anhadirFicha(jug,partida, opcion);//pone una ficha
+                continuar = anhadirFicha(partida, jug.getUnaPieza(opcion-1));//pone una ficha
+                if(continuar){
+                    jug.eliminarPieza(jug.getUnaPieza(opcion-1));
+                }
             }
             else if(opcion==(jug.getNPiezas()+1)){
                 Excepciones.cambiarColorRojo("Pasando...");//Pasa turno
@@ -138,19 +140,15 @@ public class Juego {
     }
     
     /**
-     * 
-     * @param jug Jugadores en la partida   
+     *  
      * @param partida Partida en curso
-     * @param ficha ficha que se va a añadir
+     * @param pieza ficha que se va a añadir
      * @return TRUE si la pieza fue asignada, FALSE si la pieza no tenia coincidencias con ninguna del tablero
      */
-    public static boolean anhadirFicha(Mano jug, Partida partida,int ficha){
+    public static boolean anhadirFicha( Partida partida,Pieza pieza){
         boolean anhadida=true;
-    
-        Pieza pieza=jug.getUnaPieza(ficha-1);//tengo la pieza selecionada
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);
-            jug.eliminarPieza(pieza);
         }
         else{//ya hay alguna pieza colocada
                     int n1=pieza.getN1();
@@ -167,7 +165,6 @@ public class Juego {
                                     partida.insertarPrincipio(pieza);
                                 }
                                 else partida.insertarFinal(pieza);
-                                jug.eliminarPieza(pieza);
                             }
                         }
                         else {//la pieza sobre el tablero es doble
@@ -200,7 +197,6 @@ public class Juego {
                                     }
                                     else partida.insertarPrincipio(pieza);
                                 }
-                                jug.eliminarPieza(pieza);
                             }
                             else{
                                 System.out.println("La pieza no tiene coincidencias.");
@@ -210,8 +206,7 @@ public class Juego {
                         }
                     }
                     //ninguna pieza es doble
-                    else if (n1==partida.getPrimera() || n1== partida.getUltima()
-                            || n2==partida.getPrimera() || n2== partida.getUltima() ){//si se cumple la pieza se puede colocar en algun lugar
+                    else if(coincidencias(partida,pieza)){//si se cumple la pieza se puede colocar en algun lugar
                         if(n1==partida.getPrimera() || n1== partida.getUltima()){//n1 a1 / n2 a2 y n1 a2 n2 a1
                             if(n1==partida.getPrimera()){
                                 pieza.invertirPieza();
@@ -226,7 +221,6 @@ public class Juego {
                             }
                             else partida.insertarPrincipio(pieza);
                         }
-                        jug.eliminarPieza(pieza);
                     }
                     else {
                         System.out.println("La pieza no tiene coincidencias.");
@@ -234,6 +228,17 @@ public class Juego {
                     }       
         }
         return anhadida;
+    }
+    /**
+     * 
+     * @param partida Partida actual    
+     * @param pieza Pieza a comprobar si tiene coincidencias
+     * @return TRUE si la ficha se puede situar en alguno de los extremos del tablero
+     */
+    public static boolean coincidencias(Partida partida, Pieza pieza){
+        return   pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
+                ||pieza.getN2()==partida.getPrimera() || pieza.getN1()==partida.getUltima();
+        
     }
     /** 
      * Analiza la variable puedeJugar de cada jugador
@@ -246,14 +251,8 @@ public class Juego {
         int n=0;
         while(n<jugadores.length && !jugadores[n].getPuedeJugar())
             n++;
-        if(n==jugadores.length){
-            toret=false;
-        }
-            
-        else{
-            toret=true;
-        }
-        return toret;
+        
+        return !(n==jugadores.length);
     }
     
     /**

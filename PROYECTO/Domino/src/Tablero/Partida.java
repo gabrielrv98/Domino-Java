@@ -48,9 +48,17 @@ public class Partida {
         this.nuevo=nuevo;
         numNodos++;
     }
+    /**
+     * 
+     * @return Devuelve el valor con el que se puede unir una pieza por la izq
+     */
     public int getPrimera(){
         return primero.getSig().getValor().getN1();
     }
+    /**
+     * 
+     * @return Devuelve el valor con el que se puede unir una pieza por la derecha
+     */
     public int getUltima(){
         return ultimo.getAnt().getValor().getN2();
     }

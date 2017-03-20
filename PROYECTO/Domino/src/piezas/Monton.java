@@ -12,14 +12,14 @@ import Settings.Ajustes;
  * @author reyga
  */
 public class Monton {
-    private static final int MAX_NUMERO=6;
+    
     private Pieza[] todas;
     private Pieza[] monton;
     private int nPiezasMonton;
     
     public Monton(){
         int nPiezasTotales=0;
-        for (int i = 0; i < MAX_NUMERO+1; i++) {
+        for (int i = 0; i < Ajustes.MAX_NUMERO_PIEZA+1; i++) {
             nPiezasTotales+=i+1;
         }//se han obtenido el numero de piezas totales.
         todas=new Pieza[nPiezasTotales];
@@ -27,8 +27,8 @@ public class Monton {
         nPiezasMonton=monton.length;
         int k=0;
     
-        for (int i = 0; i < MAX_NUMERO+1; i++) {
-            for (int j = i; j < MAX_NUMERO+1; j++) {
+        for (int i = 0; i < Ajustes.MAX_NUMERO_PIEZA+1; i++) {
+            for (int j = i; j < Ajustes.MAX_NUMERO_PIEZA+1; j++) {
                 todas[k]= new Pieza(i,j);
                 k++;
             }
@@ -72,7 +72,7 @@ public class Monton {
     @Override
     public String toString(){
         StringBuilder toret= new StringBuilder();
-        int j=0,k=MAX_NUMERO+1;
+        int j=0,k=Ajustes.MAX_NUMERO_PIEZA+1;
         for (int i = 0; i < todas.length; i++) {
             if(j==k){
                 toret.append("\n");
