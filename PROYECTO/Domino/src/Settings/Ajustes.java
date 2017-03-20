@@ -13,6 +13,8 @@ public class Ajustes {
     public boolean ayuda;
     public static final int MAX_NUMERO=3;
     public static final int PIEZAS_MANO=7;
+    public static final int MAX_JUGADORES=4;
+    public static final int MIN_JUGADORES=2;
     public  int carro;
     
     /**

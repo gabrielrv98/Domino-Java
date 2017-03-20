@@ -26,6 +26,10 @@ public class Partida {
     public int getNumNodos(){
         return numNodos;
     }
+    /**
+     * Inserta la pieza al principio
+     * @param pieza pieza insertada
+     */
     public void insertarPrincipio(Pieza pieza){
         Nodo nuevo= new Nodo(pieza,primero.getSig(),primero);
         primero.getSig().setAnt(nuevo);
@@ -33,6 +37,10 @@ public class Partida {
         this.nuevo=nuevo;
         numNodos++;
     }
+    /**
+     * Inserta la pieza al final
+     * @param pieza pieza insertada
+     */
     public void insertarFinal(Pieza pieza){
         Nodo nuevo= new Nodo(pieza, ultimo,ultimo.getAnt());
         ultimo.getAnt().setSig(nuevo);

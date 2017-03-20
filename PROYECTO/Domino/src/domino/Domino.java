@@ -5,11 +5,11 @@
  */
 
 /*
- * Pasar Carro a Ajustes
+ * Pasar constantes a Ajustes (carro...)
  * Arreglar añadir ficha
- * mostrar tabla puntuaciones ultima linea main(String [] args)
  * falta meter ia
  * falta meter ayuda
+ * falta meter metodos en Excepciones para cambiar cadena de color
  */
 package domino;
 import input.Excepciones;
@@ -23,9 +23,10 @@ import Settings.Ajustes;
  */
 public class Domino {
     /**
+     * Metodo main, desde aqui se le llaman a los metodos correspondientes 
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Ajustes ajustes= new Ajustes();
         System.out.println("\t\tBienvenido a appDomino G&G");
         intro();
@@ -58,11 +59,9 @@ public class Domino {
             //comprobar si puedo seguir
             if (partida.getNumNodos()!=0) {
                 if(todas.getNPiezasMonton()>0){//aun puede coger cartas
-                    Excepciones.cambiarColorRojo("Quedan piezas en el monton");
                     jugadores[actual].setPuedeJugar(true);
                 } 
                 else {
-                    Excepciones.cambiarColorRojo("no quedan piezas, se ejecuta comprobar()");
                     jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));
                 }//se comprueba si puede
             }
@@ -72,14 +71,30 @@ public class Domino {
                  fin=true;
             }
             else {
-                Excepciones.cambiarColorRojo("Ejecutando sePuedeSeguir");
                 fin=!sePuedeSeguir(jugadores);//falta testeo
                 actual= turno(actual,jugadores.length-1);
             }
         } while (!fin);
         quienHaGanado(jugadores, actual,carro);
-        System.out.println("Esto deberia ser negro-");
+        tablaPuntuaciones(jugadores);
         //mostrar Tabla de fichas y puntos.
+    }
+    
+    /**
+     * Muestra todos los jugadores junto con sus fichas y sus puntos
+     * @param jug Jugadores en la partida
+     */
+    public static void tablaPuntuaciones(Mano[] jug){
+        StringBuilder toret= new StringBuilder();
+        for (int i = 0; i < jug.length; i++) {
+            toret.append(jug[i].getNombre());
+            toret.append(": \n");
+            toret.append(jug[i]);
+            toret.append("\nPuntos: ");
+            toret.append(jug[i].getPuntuacion());
+            toret.append("\n");
+        }
+        System.out.println(toret.toString());
     }
     
     /**
@@ -95,15 +110,11 @@ public class Domino {
             actual=0;
             for (int i = 1; i < jugadores.length; i++) {
                 if(jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()){//El jug i y el actual tienen la misma putnuacion
-                    System.out.println("las puntuaciones son iguales");
                     if(i==carro){//el jugador i es el carro
-                        System.out.println("el jugador i es el carro");
                          actual=i;
                          dosIguales=false;
                     }
-                       
                     else if(actual==carro){//el jugador actual es el carro
-                        System.out.println(" el jugador actual es el carro");
                         dosIguales=false;
                     }
                     else{//ninguno es el carro y hay que acudir a un metodo para nombrar a los dos ganadores.
@@ -117,23 +128,25 @@ public class Domino {
             }
             if(dosIguales){
                 System.out.println("pene");
-                System.out.println("\u001B[34mY los GANADORES SON....");
+                Excepciones.cambiarColorAzul("Y los GANADORES SON....");
                 for (int i = 0; i < jugadores.length; i++) {
                     if (jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()) {
-                        System.out.println("\t\t\u001B[34mEl jugador nº- "+(i+1)+": "+jugadores[i].getNombre());
+                        //System.out.println("\t\t\u001B[34mEl jugador nº- "+(i+1)+": "+jugadores[i].getNombre());
+                        Excepciones.cambiarColorAzul("\t\tEl jugador nº- "+(i+1)+": "+jugadores[i].getNombre());
                     }
                 }
                 System.out.println("\u001B[30m");
-                actual=-1;
             }
             else{
-                System.out.println("\u001B[34mY el GANADOR ES....");
-                System.out.println("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
+                Excepciones.cambiarColorAzul("Y el GANADOR ES....");
+                //System.out.println("\t\t\u001B[34mEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
+                Excepciones.cambiarColorAzul("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre());
             }
         }
         else {
-            System.out.println("\u001B[34mY el GANADOR ES....");
-                System.out.println("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
+            Excepciones.cambiarColorAzul("Y el GANADOR ES....");
+            //System.out.println("\t\t\u001B[34mEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
+            Excepciones.cambiarColorAzul("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre());
         }
     }
     
@@ -158,6 +171,13 @@ public class Domino {
         return toret;
     }
     
+    /**
+     * 
+     * @param monton todas las piezas y las piezas del monton
+     * @param jug Jugadores presentes
+     * @param partida Partida en curso
+     * @param ajustes Ajustes variables (modo ayuda)
+     */
     public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
         if (ajustes.getAyuda()) 
             System.out.println(jug.ayuda(partida));
@@ -186,7 +206,7 @@ public class Domino {
             if(0<opcion && opcion<=jug.getNPiezas()){
                 
                 System.out.println("poniendo ficha...");
-                continuar = anhadirFicha(jug,partida,ajustes, opcion);//pone una ficha
+                continuar = anhadirFicha(jug,partida, opcion);//pone una ficha
             }
             else if(opcion==(jug.getNPiezas()+1)){
                 Excepciones.cambiarColorRojo("Pasando...");//Pasa turno
@@ -199,12 +219,18 @@ public class Domino {
                         vecesCogidas++;
                         continuar=false;
             }
-            else System.out.println("no entro en ninguno");
+            else Excepciones.cambiarColorRojo("no entro en ninguno, avisar al administrador");
         } while (!continuar);
             System.out.println("Turno para el siguiente");
     }
     
-    public static boolean comprobar(Mano jug,Partida partida){//devuelve false si no puede//error
+    /**
+     * 
+     * @param jug Jugadores en la partida
+     * @param partida Partida en curso
+     * @return devuelve FALSE si el jugador no puede jugar ninguna opcion
+     */
+    public static boolean comprobar(Mano jug,Partida partida){////error
         int n=0;
         boolean toret;
         int n1=partida.getPrimera();
@@ -224,6 +250,11 @@ public class Domino {
         return toret;
     }
     
+    /**
+     * Se le asigna al jugador que llamase al metodo una pieza del monton de piezas aleatoria
+     * @param jug Jugadores en la partida   
+     * @param monton Todas las piezas de la partida
+     */
     public static void cogerDelMonton(Mano jug,Monton monton){
         int pos=(int) (Math.random()*monton.getNPiezasMonton());
         Pieza pieza= monton.getUnaPiezaMonton(pos);
@@ -231,7 +262,14 @@ public class Domino {
         monton.eliminarPiezaMonton(pieza);
     }
     
-    public static boolean anhadirFicha(Mano jug, Partida partida, Ajustes ajustes,int ficha){
+    /**
+     * 
+     * @param jug Jugadores en la partida   
+     * @param partida Partida en curso
+     * @param ficha ficha que se va a añadir
+     * @return TRUE si la pieza fue asignada, FALSE si la pieza no tenia coincidencias con ninguna del tablero
+     */
+    public static boolean anhadirFicha(Mano jug, Partida partida,int ficha){
         boolean anhadida=true;
     
         Pieza pieza=jug.getUnaPieza(ficha-1);//tengo la pieza selecionada
@@ -325,7 +363,12 @@ public class Domino {
         
         
     
-    
+    /**
+     * 
+     * @param actual Jugador actual
+     * @param numJug numero de Jugadores (el primero es 0)
+     * @return el numero del siguiente jugador que ha de jugar
+     */
     public static  int turno(int actual, int numJug){
         if (actual==numJug) 
             actual=0;
@@ -333,8 +376,11 @@ public class Domino {
             actual++;
         return actual;
     }
-    
-    public static int nJugadores(){ //Confirma el numero de jugadores entre 2 y 4.
+     /**
+      * Confirma el numero de jugadores entre MAX_JUGADORES y MIN_JUGADORES (Declarado en Ajustes).
+      * @return El numero de jugadores que van a jugar
+      */
+    public static int nJugadores(){ 
         Scanner e= new Scanner (System.in);
         String aux;
         int toret;
@@ -342,23 +388,35 @@ public class Domino {
             System.out.println("El domino se juega con un minimo de 2 jugadores y un maximo de 4.");
             toret= Excepciones.introducirNumero("Introduce el numero de jugadores: ");
             
-        } while (toret>4 || toret<2);
+        } while (toret>Ajustes.MAX_JUGADORES || toret<Ajustes.MIN_JUGADORES);
         
     return toret;
     }
     
+    /**
+     * Caracteres que dan la bienvenida al/ los usuari@/s
+     */
     public static void intro(){
         System.out.println("*************************************************");
         System.out.println("*Se aceptan donaciones en forma de puntos extra.*");
         System.out.println("*************************************************");
     }
     
+    /**
+     *  Se visualizan todas las piezas
+     * @param todas  Todas las piezas con las que se van a jugar
+     */
     public static void visualizarTodasLasPiezas(Monton todas){
         
             System.out.println("\nVisualizando todas las piezas: ");
             System.out.println(todas);
     }
     
+    /**
+     * Se le asignan un numero de piezas a todos los jugadores
+     * @param todas Principalmente las piezas del monton
+     * @param jugadores Jugadores presentes en la partida
+     */
     public static void   establecerMano(Monton todas,Mano[] jugadores){//otro bug
         int pos;
         Pieza pieza;
