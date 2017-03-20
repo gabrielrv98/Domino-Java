@@ -46,6 +46,43 @@ public class Juego {
             }
         }
     }
+    /**
+     * Busca el doble mas alto que tiene algun jugador en su mano
+     * @param jug Jugadores actuales con las piezas ya declaradas
+     * @return el numero del jugador con el doble mas alto o con un numero aleatorio.
+     */
+    public static int seleccionarCarro(Mano[] jug){
+        int numeroDoble=6;
+        int n=0;
+        int toret=0;
+        while(numeroDoble>=0){
+            while(n<jug.length){
+                int f=0;
+                while( f<jug[n].getNPiezas() && (jug[n].getUnaPieza(f).getN1()!=numeroDoble || jug[n].getUnaPieza(f).getN2()!=numeroDoble))
+                    f++;
+                
+                if(f<jug[n].getNPiezas()){
+                    System.out.println("Encontrada la "+numeroDoble+","+numeroDoble
+                                         +", la tiene el jug "+(n+1)+" y el tiene"
+                            + "el primer turno");
+                    toret=n;
+                    numeroDoble=-10;
+                
+                }
+                
+                else System.out.println("no se  que ha pasado");
+                n++;
+            }
+            numeroDoble--;
+        }
+        if(numeroDoble==-1){
+            toret=(int) (Math.random()*jug.length);
+            System.out.println("No se ha encontrado ningun jugador con alguna pieza doble.\n"
+                    + "Empieza el jugador "+toret);
+        }
+        System.out.println("llege hasta qui");
+        return toret;
+    }
     
     /**
      * 

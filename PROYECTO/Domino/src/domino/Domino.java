@@ -6,10 +6,10 @@
 
 /*
  * Pasar constantes a Ajustes (carro...)
+ * Carro seleccionado por pieza diferente.
  * Arreglar añadir ficha
  * falta meter ia
  * falta meter ayuda
- * falta meter metodos en Excepciones para cambiar cadena de color
  */
 package domino;
 import input.Excepciones;
@@ -49,7 +49,7 @@ public class Domino {
         else
             System.out.println("No quedan piezas en el monton");
         Partida partida = new Partida();
-        int carro=0;//editar
+        int carro=Juego.seleccionarCarro(jugadores);//editar
         int actual=carro;
         boolean fin;
         System.out.println("--------------------------------------");
@@ -77,6 +77,7 @@ public class Domino {
         Juego.quienHaGanado(jugadores, actual,carro);
         Juego.tablaPuntos(jugadores);
     }
+    
     /**
      * 
      * @param jug Jugadores en la partida
