@@ -7,7 +7,9 @@
 /*
  * Pasar Carro a Ajustes
  * Arreglar añadir ficha
- * Acabar obtener puntucauin ( quienHaGanado())
+ * mostrar tabla puntuaciones ultima linea main(String [] args)
+ * falta meter ia
+ * falta meter ayuda
  */
 package domino;
 import input.Excepciones;
@@ -21,9 +23,6 @@ import Settings.Ajustes;
  */
 public class Domino {
     /**
-     * falta meter ayuda
-     *\n
-     * falta meter ia
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -78,43 +77,70 @@ public class Domino {
                 actual= turno(actual,jugadores.length-1);
             }
         } while (!fin);
-        int ganador=quienHaGanado(jugadores, actual,carro);
-        System.out.println("\u001B[34mY el GANADOR ES....");
-        System.out.println("\t\tEl jugador nº- "+ganador+": "+jugadores[ganador].getNombre()+"\u001B[30m");
+        quienHaGanado(jugadores, actual,carro);
         System.out.println("Esto deberia ser negro-");
+        //mostrar Tabla de fichas y puntos.
     }
     
     /**
-     * primero mira si al ultimo jugador le quedaban fichas y luego  quien tiene menor puntos
-     * @param jugadores los jugadores de la partida
-     * @param actual el ultimo jugador que ha jugado
-     * @return la posicion del ganador en el array de jugadores
+     * Primero mira si al ultimo jugador le quedaban fichas y luego  quien tiene menor puntos
+     * @param jugadores Los jugadores de la partida
+     * @param actual El ultimo jugador que ha jugado
+     * @param carro El jugador que inicia la partida, y tiene ventaja a la hora de la puntuacion
+     * @return La posicion del ganador en el array de jugadores/-1 en caso de que haya dos jugadores con la misma puntuacion y ninguno sea carro.
      */
-    public  static int quienHaGanado(Mano[] jugadores, int actual,int carro){
+    public  static void quienHaGanado(Mano[] jugadores, int actual,int carro){
         if(jugadores[actual].getNPiezas()!=0){
-            //editar y saber si funciona.
+            boolean dosIguales=false;
             actual=0;
             for (int i = 1; i < jugadores.length; i++) {
-                if(jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()){//Esto no esta optimizado ni de broma
-                    if(i==carro)
-                        actual=i;
-                    else if(actual==carro){
-                        
+                if(jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()){//El jug i y el actual tienen la misma putnuacion
+                    System.out.println("las puntuaciones son iguales");
+                    if(i==carro){//el jugador i es el carro
+                        System.out.println("el jugador i es el carro");
+                         actual=i;
+                         dosIguales=false;
                     }
-                    else{
-                        //la has liado hay dos tios con puntuaciones iguales y ninguno es carro
+                       
+                    else if(actual==carro){//el jugador actual es el carro
+                        System.out.println(" el jugador actual es el carro");
+                        dosIguales=false;
+                    }
+                    else{//ninguno es el carro y hay que acudir a un metodo para nombrar a los dos ganadores.
+                        dosIguales=true;
                     }
                 }
-                if(jugadores[i].getPuntuacion()<=jugadores[actual].getPuntuacion())
+                if(jugadores[i].getPuntuacion()<jugadores[actual].getPuntuacion()){//el jugador i tiene menor puntuacion que el jugador actual
                     actual=i;
+                    dosIguales=false;
+                }
+            }
+            if(dosIguales){
+                System.out.println("pene");
+                System.out.println("\u001B[34mY los GANADORES SON....");
+                for (int i = 0; i < jugadores.length; i++) {
+                    if (jugadores[i].getPuntuacion()==jugadores[actual].getPuntuacion()) {
+                        System.out.println("\t\t\u001B[34mEl jugador nº- "+(i+1)+": "+jugadores[i].getNombre());
+                    }
+                }
+                System.out.println("\u001B[30m");
+                actual=-1;
+            }
+            else{
+                System.out.println("\u001B[34mY el GANADOR ES....");
+                System.out.println("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
             }
         }
-        return actual;
+        else {
+            System.out.println("\u001B[34mY el GANADOR ES....");
+                System.out.println("\t\tEl jugador nº- "+(actual+1)+": "+jugadores[actual].getNombre()+"\u001B[30m");
+        }
     }
+    
     /** 
      * Analiza la variable puedeJugar de cada jugador
-     * @param jugadores 
-     * @return  devulve TRUE si hay un jugadore que su variable puedeJugar es true
+     * @param jugadores Jugadores de la partida
+     * @return  Devulve TRUE si hay un jugadore que su variable puedeJugar es true
      *
      */   
     public static boolean sePuedeSeguir(Mano [] jugadores){

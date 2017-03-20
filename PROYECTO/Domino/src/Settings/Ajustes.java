@@ -15,6 +15,9 @@ public class Ajustes {
     public static final int PIEZAS_MANO=7;
     public  int carro;
     
+    /**
+     * establezco el carro en base a 1) n que yo eliga 2)(en proceso) quien tenga el doble 6
+     */
     public Ajustes(){
         carro=1;
     }
@@ -30,6 +33,7 @@ public class Ajustes {
     public void setCarro(int n){
         carro=n;
     }
+    
     public int getCarro(){
         return carro;
     }
