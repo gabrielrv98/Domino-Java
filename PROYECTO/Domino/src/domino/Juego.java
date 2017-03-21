@@ -93,21 +93,23 @@ public class Juego {
         int maxOpciones;
         int vecesCogidas=0;
         boolean continuar;
-        
-        if (ajustes.getAyuda()) 
-            System.out.println(jug.ayuda(partida));
-        
-        else System.out.println(jug);
-        
-        System.out.println(partida);
         do {
+            if (ajustes.getAyuda()) 
+                System.out.println(jug.ayuda(partida));
+
+            else System.out.println(jug);
+
+            System.out.println(partida);
+        
             continuar=true;
             Excepciones.cambiarColorRojo("\t\tElige que hacer:");
             System.out.println("(1-"+jug.getNPiezas()+")-Poner una ficha en el tablero.");
-            System.out.println((jug.getNPiezas()+1)+".- Pasar");
+            if(monton.getNPiezasMonton()<=0 && vecesCogidas<Ajustes.MAX_VECES_COGER && ajustes.getAyuda())// && !puedeJugarAlgunaFicha()
+                    System.out.println(Excepciones.cambiarColorVerde((jug.getNPiezas()+1)+".- Pasar"));
+            else System.out.println((jug.getNPiezas()+1)+".- Pasar");
             maxOpciones=(jug.getNPiezas()+1);
             if(monton.getNPiezasMonton()>0 && vecesCogidas<Ajustes.MAX_VECES_COGER){
-                if((ajustes.getAyuda())){
+                if((ajustes.getAyuda())){// && !puedeJugarAlgunaFicha (deberia mirar: si se han gastado todas las fichas que contienen algun numero de los que has jugado)
                     System.out.println(Excepciones.cambiarColorVerde((jug.getNPiezas()+2)+".- Coger una ficha del monton."));
                 }
                 else System.out.println((jug.getNPiezas()+2)+".- Coger una ficha del monton.");
@@ -130,8 +132,6 @@ public class Juego {
             }
             else if(opcion==(jug.getNPiezas()+2)){//Coge una ficha del monton, y vuelve a ofrecer la opcion 1 y 2
                 Domino.cogerDelMonton(jug,monton);
-                        System.out.println(jug);
-                        System.out.println(partida);
                         System.out.println("has cogido del monton");
                         vecesCogidas++;
                         continuar=false;
