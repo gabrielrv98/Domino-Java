@@ -7,8 +7,6 @@ package domino;
 
 import Settings.Ajustes;
 import Tablero.Partida;
-import static domino.Domino.cogerDelMonton;
-import static domino.Domino.coincidencias;
 import input.Excepciones;
 import piezas.*;
 
@@ -91,24 +89,28 @@ public class Juego {
      * @param ajustes Ajustes variables (modo ayuda)
      */
     public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
-        if (ajustes.getAyuda()) 
-            System.out.println(jug.ayuda(partida));
-        else
-            System.out.println(jug);
-        System.out.println(partida);
-        final int MAX_VECES_COGER =1;
         int opcion;
         int maxOpciones;
         int vecesCogidas=0;
         boolean continuar;
+        
+        if (ajustes.getAyuda()) 
+            System.out.println(jug.ayuda(partida));
+        
+        else System.out.println(jug);
+        
+        System.out.println(partida);
         do {
             continuar=true;
             Excepciones.cambiarColorRojo("\t\tElige que hacer:");
             System.out.println("(1-"+jug.getNPiezas()+")-Poner una ficha en el tablero.");
             System.out.println((jug.getNPiezas()+1)+".- Pasar");
             maxOpciones=(jug.getNPiezas()+1);
-            if(monton.getNPiezasMonton()>0 && vecesCogidas<MAX_VECES_COGER){
-                System.out.println((jug.getNPiezas()+2)+".- Coger una ficha del monton.");
+            if(monton.getNPiezasMonton()>0 && vecesCogidas<Ajustes.MAX_VECES_COGER){
+                if((ajustes.getAyuda())){
+                    System.out.println(Excepciones.cambiarColorVerde((jug.getNPiezas()+2)+".- Coger una ficha del monton."));
+                }
+                else System.out.println((jug.getNPiezas()+2)+".- Coger una ficha del monton.");
                 maxOpciones=(jug.getNPiezas()+2);
             }
             do {
@@ -127,7 +129,7 @@ public class Juego {
                 Excepciones.cambiarColorRojo("Pasando...");//Pasa turno
             }
             else if(opcion==(jug.getNPiezas()+2)){//Coge una ficha del monton, y vuelve a ofrecer la opcion 1 y 2
-                cogerDelMonton(jug,monton);
+                Domino.cogerDelMonton(jug,monton);
                         System.out.println(jug);
                         System.out.println(partida);
                         System.out.println("has cogido del monton");
@@ -236,8 +238,8 @@ public class Juego {
      * @return TRUE si la ficha se puede situar en alguno de los extremos del tablero
      */
     public static boolean coincidencias(Partida partida, Pieza pieza){
-        return   pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
-                ||pieza.getN2()==partida.getPrimera() || pieza.getN1()==partida.getUltima();
+        return   (pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
+                ||pieza.getN2()==partida.getPrimera() || pieza.getN2()==partida.getUltima());
         
     }
     /** 

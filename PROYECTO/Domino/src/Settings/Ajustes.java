@@ -10,12 +10,13 @@ package Settings;
  * @author reyga
  */
 public class Ajustes {
-    public boolean ayuda;
+    private  boolean ayuda;
     public  static final int MAX_NUMERO_PIEZA=6;
     public static final int MAX_NUMERO=3;
     public static final int PIEZAS_MANO=7;
     public static final int MAX_JUGADORES=4;
     public static final int MIN_JUGADORES=2;
+    public static final int MAX_VECES_COGER =1;
     public  int carro;
     
     /**

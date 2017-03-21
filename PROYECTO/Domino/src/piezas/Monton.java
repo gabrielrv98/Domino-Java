@@ -26,7 +26,6 @@ public class Monton {
         monton=new Pieza[nPiezasTotales];
         nPiezasMonton=monton.length;
         int k=0;
-    
         for (int i = 0; i < Ajustes.MAX_NUMERO_PIEZA+1; i++) {
             for (int j = i; j < Ajustes.MAX_NUMERO_PIEZA+1; j++) {
                 todas[k]= new Pieza(i,j);

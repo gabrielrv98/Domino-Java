@@ -8,7 +8,9 @@
  * Pasar constantes a Ajustes (carro...)
  * Arreglar añadir ficha
  * falta meter ia
- * falta meter ayuda
+ * Fragmentar Puede jugar
+ * Usar PuedeJugar.soloFichas para que si no tenga ninguna ficha que se pueda usar
+ * el coger ficha del monton este en verde
  */
 package domino;
 import input.Excepciones;
@@ -63,7 +65,8 @@ public class Domino {
                     jugadores[actual].setPuedeJugar(comprobar(jugadores[actual],partida));
                 }//se comprueba si puede
             }
-            System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+jugadores[actual].getPuedeJugar());
+            System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+
+                    jugadores[actual].getPuedeJugar());
             Juego.jugada(todas,jugadores[actual],partida,ajustes);
             if(jugadores[actual].getNPiezas()==0){
                  fin=true;
