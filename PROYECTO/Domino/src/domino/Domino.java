@@ -101,7 +101,7 @@ public class Domino {
      */
     public static boolean coincidencias(Partida partida, Pieza pieza){
         return   pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
-                ||pieza.getN2()==partida.getPrimera() || pieza.getN1()==partida.getUltima();
+                ||pieza.getN2()==partida.getPrimera() || pieza.getN2()==partida.getUltima();
         
     }
     
