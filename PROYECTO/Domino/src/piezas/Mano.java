@@ -117,7 +117,7 @@ public class Mano {
         for (int i = 0; i < nPiezas; i++) {
             if(partida.getNumNodos()!=0){
                 if(Juego.coincidencias(partida, piezas[i])){
-                    toret.append(Excepciones.cambiarColorVerde(""+(i+1)));//Esto no es la cadena que quiero.
+                    toret.append(Excepciones.cambiarColorVerde(""+(i+1)));
                     toret.append(Excepciones.cambiarColorVerde(piezas[i].toString()));
                 }
                 else{
@@ -126,8 +126,8 @@ public class Mano {
                 }
             }
             else{
-                toret.append(i+1);
-                toret.append(piezas[i]);
+                toret.append(Excepciones.cambiarColorVerde(""+(i+1)));
+                toret.append(Excepciones.cambiarColorVerde(piezas[i].toString()));
             }
             toret.append("\n");
         }

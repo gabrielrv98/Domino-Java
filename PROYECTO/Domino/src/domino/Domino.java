@@ -8,9 +8,6 @@
  * Pasar constantes a Ajustes (carro...)**
  * Arreglar añadir ficha***
  * falta meter ia*
- * Fragmentar Puede jugar**
- * Usar PuedeJugar.soloFichas para que si no tenga ninguna ficha que se pueda usar
- * el coger ficha del monton este en verde L 111
  */
 package domino;
 import input.Excepciones;

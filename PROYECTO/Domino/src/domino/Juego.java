@@ -50,7 +50,7 @@ public class Juego {
      * @param jug Jugadores actuales con las piezas ya declaradas
      * @return el numero del jugador con el doble mas alto o con un numero aleatorio.
      */
-    public static int seleccionarCarro(Mano[] jug){
+    public static int seleccionarCarro(Mano[] jug){//error no vio la 0,0
         int numeroDoble=6;
         int n=0;
         int toret=0;
@@ -93,6 +93,9 @@ public class Juego {
         int maxOpciones;
         int vecesCogidas=0;
         boolean continuar;
+        if (monton.getNPiezasMonton()<=0) {
+            vecesCogidas=Ajustes.MAX_VECES_COGER;
+        }
         do {
             if (ajustes.getAyuda()) 
                 System.out.println(jug.ayuda(partida));
@@ -104,15 +107,16 @@ public class Juego {
             continuar=true;
             Excepciones.cambiarColorRojo("\t\tElige que hacer:");
             System.out.println("(1-"+jug.getNPiezas()+")-Poner una ficha en el tablero.");
-            if(monton.getNPiezasMonton()<=0 && vecesCogidas<Ajustes.MAX_VECES_COGER 
+            if( vecesCogidas>=Ajustes.MAX_VECES_COGER 
                     && ajustes.getAyuda() && partida.getNumNodos()>0 && !Domino.comprobar(jug, partida)){
                     System.out.println(Excepciones.cambiarColorVerde((jug.getNPiezas()+1)+".- Pasar"));
+                
             }
             else System.out.println((jug.getNPiezas()+1)+".- Pasar");
             maxOpciones=(jug.getNPiezas()+1);
             
-            if(monton.getNPiezasMonton()>0 && vecesCogidas<Ajustes.MAX_VECES_COGER){
-                if((ajustes.getAyuda())&& partida.getNumNodos()>0 && !Domino.comprobar(jug, partida)){// && !puedeJugarAlgunaFicha (deberia mirar: si se han gastado todas las fichas que contienen algun numero de los que has jugado)
+            if(vecesCogidas<Ajustes.MAX_VECES_COGER){
+                if((ajustes.getAyuda())&& partida.getNumNodos()>0 && !Domino.comprobar(jug, partida)){// (deberia mirar: si se han gastado todas las fichas que contienen algun numero de los que has jugado)
                         System.out.println(Excepciones.cambiarColorVerde((jug.getNPiezas()+2)+".- Coger una ficha del monton."));
                 }
                 else System.out.println((jug.getNPiezas()+2)+".- Coger una ficha del monton.");
