@@ -160,6 +160,7 @@ public class Juego {
             partida.insertarPrincipio(pieza);
         }
         else{//ya hay alguna pieza colocada
+            if(coincidencias(partida,pieza)){
                     int n1=pieza.getN1();
                     int n2=pieza.getN2();//valores de las piezas seleccionadas del jugador
                     if(n1==n2 || partida.getPrimera()==partida.getUltima()){//alguna pieza es dolbe
@@ -179,43 +180,45 @@ public class Juego {
                         else {//la pieza sobre el tablero es doble
                             if(n1==partida.getPrimera() || n2==partida.getPrimera()){
                                 if (n1==partida.getPrimera()) {//coincide con el numero de la izq
-                                    int pos;
-                                    System.out.println("Donde quieres colocar la pieza: "
-                                            + "\n1.-Izquierda."
-                                            + "\n2.-Derecha.");
-                                    do {
-                                        pos=Excepciones.introducirNumero("Lugar:");
-                                    } while (pos>2||pos<1);
-                                    if(pos==1){
+                                    
+                                    if ( ultima()) {
+                                        partida.insertarFinal(pieza);
+                                    }
+                                    else{
                                         pieza.invertirPieza();
                                         partida.insertarPrincipio(pieza);
                                     }
-                                    else partida.insertarFinal(pieza);
                                 }
                                 else if(n2==partida.getPrimera()) {//coincide con el numero de la derecha
-                                    int pos;
-                                    System.out.println("Donde quieres colocar la pieza: "
-                                            + "\n1.-Izquierda."
-                                            + "\n2.-Derecha.");
-                                    do {
-                                        pos=Excepciones.introducirNumero("Lugar:");
-                                    } while (pos>2||pos<1);
-                                    if(pos==2){
+                                    if (ultima()) {
                                         pieza.invertirPieza();
                                         partida.insertarFinal(pieza);
                                     }
-                                    else partida.insertarPrincipio(pieza);
+                                    else{
+                                        
+                                        partida.insertarPrincipio(pieza);
+                                    }
                                 }
                             }
-                            else{
-                                System.out.println("La pieza no tiene coincidencias.");
-                                anhadida=false;
-                            }
-                                
                         }
                     }
                     //ninguna pieza es doble
-                    else if(coincidencias(partida,pieza)){//si se cumple la pieza se puede colocar en algun lugar
+                    else if((n1==partida.getUltima() && n2==partida.getPrimera()) 
+                            || (n2==partida.getUltima()&& n1==partida.getPrimera())){
+                        if(n1==partida.getUltima() && n2==partida.getPrimera()){
+                            if (ultima()) {
+                                partida.insertarFinal(pieza);
+                            }
+                            else partida.insertarPrincipio(pieza);
+                        }else{
+                            pieza.invertirPieza();
+                            if (ultima()) {
+                                partida.insertarFinal(pieza);
+                            }else partida.insertarPrincipio(pieza);
+                        }
+                            
+                    }
+                    else{//si se cumple la pieza se puede colocar en algun lugar
                         if(n1==partida.getPrimera() || n1== partida.getUltima()){//n1 a1 / n2 a2 y n1 a2 n2 a1
                             if(n1==partida.getPrimera()){
                                 pieza.invertirPieza();
@@ -231,13 +234,28 @@ public class Juego {
                             else partida.insertarPrincipio(pieza);
                         }
                     }
-                    else {
+                       
+            }
+            else {
                         System.out.println("La pieza no tiene coincidencias.");
                         anhadida=false;
-                    }       
+                    } 
         }
         return anhadida;
     }
+    
+    public static boolean ultima(){
+        int pos;
+        System.out.println("Donde quieres colocar la pieza: "
+                                + "\n1.-Izquierda."
+                                + "\n2.-Derecha.");
+        do {
+            pos=Excepciones.introducirNumero("Lugar:");
+        } while (pos>2||pos<1);
+        return pos==2;
+        
+    }
+    
     /**
      * 
      * @param partida Partida actual    
