@@ -44,6 +44,11 @@ public class Juego {
                 
             }
         }
+        System.out.println("\nCada jugador tiene "+jugadores[0].getNPiezas()+" piezas.");
+        if(todas.getNPiezasMonton()!=0)
+            System.out.println("Y en el monton quedan "+todas.getNPiezasMonton());
+        else
+            System.out.println("No quedan piezas en el monton");
     }
     /**
      * Busca el doble mas alto que tiene algun jugador en su mano
@@ -52,9 +57,9 @@ public class Juego {
      */
     public static int seleccionarCarro(Mano[] jug){//error no vio la 0,0
         int numeroDoble=6;
-        int n=0;
         int toret=0;
         while(numeroDoble>=0){
+            int n=0;
             while(n<jug.length){
                 int f=0;
                 while( f<jug[n].getNPiezas() && 
@@ -64,14 +69,14 @@ public class Juego {
                 if(f<jug[n].getNPiezas()){
                     System.out.println("Encontrada la "+numeroDoble+","+numeroDoble
                                          +", la tiene el jug "+(n+1)+" y el tiene"
-                            + "el primer turno");
+                                         + "el primer turno");
                     toret=n;
                     numeroDoble=-10;
                 
                 }
                 n++;
             }
-            numeroDoble--;
+            numeroDoble-=1;
         }
         if(numeroDoble==-1){
             toret=(int) (Math.random()*jug.length);

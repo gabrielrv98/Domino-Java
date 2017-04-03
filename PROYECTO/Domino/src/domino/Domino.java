@@ -5,8 +5,6 @@
  */
 
 /*
- * Pasar constantes a Ajustes (carro...)**
- * Arreglar añadir ficha***
  * falta meter ia*
  */
 package domino;
@@ -30,22 +28,12 @@ public class Domino {
         intro();
         Monton todas= new Monton();
         Mano[] jugadores=new Mano[nJugadores()];
-        ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));
-        //meter para jugar vs ia;
         int maxPiezasMano=todas.getNPiezasTotales()-(Ajustes.PIEZAS_MANO*(jugadores.length-1));
-        System.out.println("Jugadores humanos: "+jugadores.length);
-        for (int i = 0; i < jugadores.length; i++) {
-            String aux=("Introduce el nombre del jugador "+(i+1)+": ");
-            aux=Excepciones.introducirCadena(aux);
-            jugadores[i]=new Mano(aux,maxPiezasMano);
-        }
-        Juego.visualizarTodasLasPiezas(todas);
-        Juego.establecerMano(todas,jugadores);
-        System.out.println("\nCada jugador tiene "+jugadores[0].getNPiezas()+" piezas.");
-        if(todas.getNPiezasMonton()!=0)
-            System.out.println("Y en el monton quedan "+todas.getNPiezasMonton());
-        else
-            System.out.println("No quedan piezas en el monton");
+        ajustes.setAyuda(Excepciones.introducirBoolean("Quieres utilizar la ayuda?"));//Inicializar el modo ayuda
+        int IAs=establecerIA(jugadores);//Declara el numero de IAs
+        establecerJugadores(jugadores, IAs, maxPiezasMano);//Establece los jugadores con sus nombres
+        Juego.visualizarTodasLasPiezas(todas);//Visualiza las piezas
+        Juego.establecerMano(todas,jugadores);//Establece las manos a todos los jugadores
         Partida partida = new Partida();
         int carro=Juego.seleccionarCarro(jugadores);//editar
         int actual=carro;
@@ -77,6 +65,39 @@ public class Domino {
         Juego.tablaPuntos(jugadores);
     }
     
+    public static void establecerJugadores(Mano[] jug, int IAs, int maxPiezasMano) throws Exception{
+        String aux;
+        for (int i = 0; i < (jug.length-IAs); i++) {
+            aux=("Introduce el nombre del jugador "+(i+1)+": ");
+            aux=Excepciones.introducirCadena(aux);
+            jug[i]=new Mano(aux,maxPiezasMano);
+        }
+        for (int i = (jug.length-IAs); i < jug.length; i++) {
+            aux=("IA "+(i+1));
+            jug[i]=new Mano(aux,maxPiezasMano);
+            jug[i].setIA(true);
+        }
+    }
+    
+    public static int establecerIA(Mano [] jug){
+        int op;
+        System.out.println("De los "+jug.length+" jugadores cuantos quieres qu sean IA?");
+        do {
+            op=input.Excepciones.introducirNumero("-> ");
+        } while (op>jug.length-1 || op<0);
+        switch (op) {
+            case 0:
+                System.out.println("No habra nin jugador como IA");
+                break;
+            case 1:
+                System.out.println("El ultimo jugador será la IA");
+                break;
+            default:
+                System.out.println("Los "+op+" ultimos jugadores serán IA");
+                break;
+        }
+        return op;
+    }
     /**
      * 
      * @param jug Jugadores en la partida

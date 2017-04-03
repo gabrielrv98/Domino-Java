@@ -16,6 +16,7 @@ public class Mano {
     private Pieza[] piezas;
     private String nombre;
     private boolean puedeJugar;
+    private boolean ia;
     /**
      * 
      * @param name nombre del jugador
@@ -26,6 +27,23 @@ public class Mano {
         piezas= new Pieza[(maxPiezasMano)];
         nPiezas=0;
         puedeJugar=true;
+        ia=false;
+    }
+    
+    /**
+     * Establece la variable para saber si es la ia o no
+     * @param yn es la ia o no
+     */
+    public void setIA(boolean yn){
+        ia=yn;
+    }
+    
+    /**
+     * Devuelve la variable booleana ia
+     * @return si es la maquina o no
+     */
+    public boolean getIA(){
+        return ia;
     }
     
     /**
