@@ -9,6 +9,7 @@ import Settings.Ajustes;
 import Tablero.Partida;
 import input.Excepciones;
 import piezas.*;
+import Domino.*;
 
 /**
  *
@@ -30,7 +31,7 @@ public class Juego {
      * @param todas Principalmente las piezas del monton
      * @param jugadores Jugadores presentes en la partida
      */
-    public static void   establecerMano(Monton todas,Mano[] jugadores){
+    public static void establecerMano(Monton todas,Mano[] jugadores){
         int pos;
         Pieza pieza;
         for (int i = 0; i < jugadores.length; i++) {
@@ -68,7 +69,7 @@ public class Juego {
                 
                 if(f<jug[n].getNPiezas()){
                     System.out.println("Encontrada la "+numeroDoble+","+numeroDoble
-                                         +", la tiene el jug "+(n+1)+" y el tiene"
+                                         +", la tiene el jugador "+(n+1)+" y el tiene "
                                          + "el primer turno");
                     toret=n;
                     numeroDoble=-10;
@@ -134,7 +135,7 @@ public class Juego {
             if(0<opcion && opcion<=jug.getNPiezas()){
                 
                 System.out.println("poniendo ficha...");
-                continuar = anhadirFicha(partida, jug.getUnaPieza(opcion-1));//pone una ficha
+                continuar = anhadirFicha(partida, jug.getUnaPieza(opcion-1),jug);//pone una ficha
                 if(continuar){
                     jug.eliminarPieza(jug.getUnaPieza(opcion-1));
                 }
@@ -153,13 +154,48 @@ public class Juego {
             System.out.println("Turno para el siguiente");
     }
     
+    public static void juegaLaMaquina(Monton monton,Mano jug, Partida partida, Ajustes ajustes) {
+        int n;
+        int vecesCogidas=0;
+        boolean continuar;
+        if (monton.getNPiezasMonton()<=0) {
+            vecesCogidas=Ajustes.MAX_VECES_COGER;
+        }
+        do {
+            continuar=true;
+            n=0;
+            if (partida.getNumNodos()<=0) {
+                continuar = anhadirFicha(partida, jug.getUnaPieza(n), jug);
+                jug.eliminarPieza(jug.getUnaPieza(n));
+            } else {
+                while (n<jug.getNPiezas() && !Domino.coincidencias(partida, jug.getUnaPieza(n))) {
+                    n++;
+                }
+                if (n>=jug.getNPiezas()) {
+                    if (vecesCogidas<Ajustes.MAX_VECES_COGER) {
+                        Domino.cogerDelMonton(jug, monton);
+                        vecesCogidas++;
+                        continuar=false;
+                    }
+                }
+                else {
+                    continuar= anhadirFicha(partida, jug.getUnaPieza(n), jug);
+                    jug.eliminarPieza(jug.getUnaPieza(n));
+                }
+            }
+            
+            
+        } while (!continuar);
+            System.out.println("Turno para el siguiente");
+    }
+    
     /**
      *  
      * @param partida Partida en curso
      * @param pieza ficha que se va a añadir
      * @return TRUE si la pieza fue asignada, FALSE si la pieza no tenia coincidencias con ninguna del tablero
      */
-    public static boolean anhadirFicha( Partida partida,Pieza pieza){
+    public static boolean anhadirFicha( Partida partida,Pieza pieza, Mano jug){
         boolean anhadida=true;
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);
@@ -176,17 +212,27 @@ public class Juego {
                                 anhadida=false;
                             }
                             else{
-                                if(n1==partida.getPrimera()){
-                                    partida.insertarPrincipio(pieza);
+                                if(n1==partida.getPrimera() || n1==partida.getUltima()){
+                                    if(n1==partida.getPrimera() && n1==partida.getUltima()){
+                                        if (!jug.getIA()) {
+                                            if(  dondeColocarla() )
+                                                partida.insertarFinal(pieza);
+                                            else partida.insertarPrincipio(pieza);
+                                        }
+                                        else partida.insertarFinal(pieza);
+                                    }  
+                                    else if(n1==partida.getPrimera())
+                                        partida.insertarPrincipio(pieza);
+                                    else partida.insertarFinal(pieza);
                                 }
-                                else partida.insertarFinal(pieza);
+                                
                             }
                         }
                         else {//la pieza sobre el tablero es doble
                             if(n1==partida.getPrimera() || n2==partida.getPrimera()){
                                 if (n1==partida.getPrimera()) {//coincide con el numero de la izq
                                     
-                                    if ( ultima()) {
+                                    if (  !jug.getIA() && dondeColocarla() ) {
                                         partida.insertarFinal(pieza);
                                     }
                                     else{
@@ -195,7 +241,7 @@ public class Juego {
                                     }
                                 }
                                 else if(n2==partida.getPrimera()) {//coincide con el numero de la derecha
-                                    if (ultima()) {
+                                    if (!jug.getIA() && dondeColocarla()) {
                                         pieza.invertirPieza();
                                         partida.insertarFinal(pieza);
                                     }
@@ -211,13 +257,13 @@ public class Juego {
                     else if((n1==partida.getUltima() && n2==partida.getPrimera()) 
                             || (n2==partida.getUltima()&& n1==partida.getPrimera())){
                         if(n1==partida.getUltima() && n2==partida.getPrimera()){
-                            if (ultima()) {
+                            if (!jug.getIA() && dondeColocarla()) {
                                 partida.insertarFinal(pieza);
                             }
                             else partida.insertarPrincipio(pieza);
                         }else{
                             pieza.invertirPieza();
-                            if (ultima()) {
+                            if (!jug.getIA() && dondeColocarla()) {
                                 partida.insertarFinal(pieza);
                             }else partida.insertarPrincipio(pieza);
                         }
@@ -249,7 +295,7 @@ public class Juego {
         return anhadida;
     }
     
-    public static boolean ultima(){
+    public static boolean dondeColocarla(){
         int pos;
         System.out.println("Donde quieres colocar la pieza: "
                                 + "\n1.-Izquierda."

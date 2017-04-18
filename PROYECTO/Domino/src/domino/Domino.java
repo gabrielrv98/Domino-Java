@@ -35,10 +35,10 @@ public class Domino {
         Juego.visualizarTodasLasPiezas(todas);//Visualiza las piezas
         Juego.establecerMano(todas,jugadores);//Establece las manos a todos los jugadores
         Partida partida = new Partida();
-        int carro=Juego.seleccionarCarro(jugadores);//editar
+        int carro=Juego.seleccionarCarro(jugadores);//Selecciona la persona que tenga el doble mas alto
         int actual=carro;
         boolean fin;
-        System.out.println("--------------------------------------");
+        System.out.println("--------------------------------------");//Inicio de la partida
         do {//La partida ha empezado
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
             //comprobar si puedo seguir
@@ -52,7 +52,10 @@ public class Domino {
             }
             System.out.println("El jugador "+jugadores[actual].getNombre()+" puede jugar: "+
                     jugadores[actual].getPuedeJugar());
-            Juego.jugada(todas,jugadores[actual],partida,ajustes);
+            if (jugadores[actual].getIA() && jugadores[actual].getPuedeJugar()) {
+                Juego.juegaLaMaquina(todas,jugadores[actual],partida,ajustes);
+            }
+            else Juego.jugada(todas,jugadores[actual],partida,ajustes);
             if(jugadores[actual].getNPiezas()==0){
                  fin=true;
             }
@@ -79,15 +82,20 @@ public class Domino {
         }
     }
     
+    /**
+     *  Crea las IAs
+     * @param jug Jugadores de la partida
+     * @return numero de IAs
+     */
     public static int establecerIA(Mano [] jug){
         int op;
-        System.out.println("De los "+jug.length+" jugadores cuantos quieres qu sean IA?");
+        System.out.println("De los "+jug.length+" jugadores cuantos quieres que sean IA?");
         do {
             op=input.Excepciones.introducirNumero("-> ");
         } while (op>jug.length-1 || op<0);
         switch (op) {
             case 0:
-                System.out.println("No habra nin jugador como IA");
+                System.out.println("No habrá nin jugador como IA");
                 break;
             case 1:
                 System.out.println("El ultimo jugador será la IA");
