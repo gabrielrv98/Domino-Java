@@ -130,7 +130,7 @@ public class Mano {
      * @param partida Partida actual
      * @return una Cadena, en verde o negro.
      */
-    public String ayuda(Partida partida){
+    public String ayuda(Tablero partida){
         StringBuilder toret= new StringBuilder();
         for (int i = 0; i < nPiezas; i++) {
             if(partida.getNumNodos()!=0){

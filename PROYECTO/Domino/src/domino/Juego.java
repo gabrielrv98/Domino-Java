@@ -7,9 +7,9 @@ package domino;
 
 import Settings.Ajustes;
 import Tablero.Partida;
+import Tablero.Tablero;
 import input.Excepciones;
 import piezas.*;
-import Domino.*;
 
 /**
  *
@@ -24,7 +24,7 @@ public class Juego {
     public static void visualizarTodasLasPiezas(Monton todas){
         
             System.out.println("\nVisualizando todas las piezas: ");
-            System.out.println(todas);
+            System.out.println(todas.toString());
     }
     /**
      * Se le asignan un numero de piezas a todos los jugadores
@@ -38,7 +38,7 @@ public class Juego {
             for (int j = 0; j < Ajustes.PIEZAS_MANO; j++) {
                 if(todas.getNPiezasMonton()>0){
                    pos=(int) (Math.random()*todas.getNPiezasMonton());
-                    pieza=todas.getUnaPiezaMonton(pos);
+                    pieza=todas.getUnaPieza(pos);
                     jugadores[i].setUnaPieza(pieza);
                     todas.eliminarPiezaMonton(pieza); 
                 }
@@ -69,7 +69,7 @@ public class Juego {
                 
                 if(f<jug[n].getNPiezas()){
                     System.out.println("Encontrada la "+numeroDoble+","+numeroDoble
-                                         +", la tiene el jugador "+(n+1)+" y el tiene "
+                                         +", la tiene él jugador "+(n+1)+" y el tiene "
                                          + "el primer turno");
                     toret=n;
                     numeroDoble=-10;
@@ -94,7 +94,7 @@ public class Juego {
      * @param partida Partida en curso
      * @param ajustes Ajustes variables (modo ayuda)
      */
-    public static  void jugada(Monton monton,Mano jug, Partida partida, Ajustes ajustes){
+    public static  void jugada(Monton monton,Mano jug, Tablero partida, Ajustes ajustes){
         int opcion;
         int maxOpciones;
         int vecesCogidas=0;
@@ -154,7 +154,7 @@ public class Juego {
             System.out.println("Turno para el siguiente");
     }
     
-    public static void juegaLaMaquina(Monton monton,Mano jug, Partida partida, Ajustes ajustes) {
+    public static void juegaLaMaquina(Monton monton,Mano jug, Tablero partida, Ajustes ajustes) {
         int n;
         int vecesCogidas=0;
         boolean continuar;
@@ -195,7 +195,7 @@ public class Juego {
      * @param pieza ficha que se va a añadir
      * @return TRUE si la pieza fue asignada, FALSE si la pieza no tenia coincidencias con ninguna del tablero
      */
-    public static boolean anhadirFicha( Partida partida,Pieza pieza, Mano jug){
+    public static boolean anhadirFicha( Tablero partida,Pieza pieza, Mano jug){
         boolean anhadida=true;
         if(partida.getNumNodos()==0){
             partida.insertarPrincipio(pieza);
@@ -313,7 +313,7 @@ public class Juego {
      * @param pieza Pieza a comprobar si tiene coincidencias
      * @return TRUE si la ficha se puede situar en alguno de los extremos del tablero
      */
-    public static boolean coincidencias(Partida partida, Pieza pieza){
+    public static boolean coincidencias(Tablero partida, Pieza pieza){
         return   (pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
                 ||pieza.getN2()==partida.getPrimera() || pieza.getN2()==partida.getUltima());
         

@@ -17,7 +17,7 @@ public class Ajustes {
     public static final int MAX_JUGADORES=4;
     public static final int MIN_JUGADORES=2;
     public static final int MAX_VECES_COGER =1;
-    public  int carro;
+    private   int carro;
     
     /**
      * establezco el carro en base a 1) n que yo eliga 2)(en proceso) quien tenga el doble 6

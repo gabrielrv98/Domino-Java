@@ -9,35 +9,36 @@ import piezas.*;
 /**
  *
  * @author OrenadorOmega
+ * @param <E> posiblemente pieza
  */
-public class Nodo {
-    private Pieza valor;
-    private Nodo siguiente;
-    private Nodo anterior;
+public class  Nodo<E>{// extends Object{
+    private E valor;
+    private Nodo<E> siguiente;
+    private Nodo<E> anterior;
     
-    public Nodo(Pieza v, Nodo sig, Nodo ant){
+    public Nodo (E v, Nodo<E> sig, Nodo<E> ant){
         valor=v;
         siguiente=sig;
         anterior=ant;
     }
-
-    public Pieza getValor() {
+    
+    public E getValor() {
         return valor;
     }
 
-    public Nodo getSig() {
+    public Nodo<E> getSig() {
         return siguiente;
     }
 
-    public void setSig(Nodo siguiente) {
+    public void setSig(Nodo<E> siguiente) {
         this.siguiente = siguiente;
     }
 
-    public Nodo getAnt() {
+    public Nodo<E> getAnt() {
         return anterior;
     }
 
-    public void setAnt(Nodo anterior) {
+    public void setAnt(Nodo<E> anterior) {
         this.anterior = anterior;
     }
 

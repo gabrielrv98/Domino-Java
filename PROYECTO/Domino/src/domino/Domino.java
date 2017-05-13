@@ -1,12 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Dudas reyes
+ * Como poner el atributo carro privado. 
+ * (puedo eliminar esta variable pues solo se usa en el main y no hace falta)
+ * 
+ * 
  */
 
-/*
- * falta meter ia*
- */
 package domino;
 import input.Excepciones;
 import piezas.*;
@@ -34,12 +33,12 @@ public class Domino {
         establecerJugadores(jugadores, IAs, maxPiezasMano);//Establece los jugadores con sus nombres
         Juego.visualizarTodasLasPiezas(todas);//Visualiza las piezas
         Juego.establecerMano(todas,jugadores);//Establece las manos a todos los jugadores
-        Partida partida = new Partida();
+        Tablero partida = new Tablero();
         int carro=Juego.seleccionarCarro(jugadores);//Selecciona la persona que tenga el doble mas alto
         int actual=carro;
-        boolean fin;
+        boolean fin=false;
         System.out.println("--------------------------------------");//Inicio de la partida
-        do {//La partida ha empezado
+        while (!fin){//La partida ha empezado
             System.out.println("\n-->Juega: "+jugadores[actual].getNombre());
             //comprobar si puedo seguir
             if (partida.getNumNodos()!=0) {
@@ -63,7 +62,7 @@ public class Domino {
                 fin=!Juego.sePuedeSeguir(jugadores);//falta testeo
                 actual= turno(actual,jugadores.length-1);
             }
-        } while (!fin);
+        } 
         Juego.quienHaGanado(jugadores, actual,carro);
         Juego.tablaPuntos(jugadores);
     }
@@ -112,7 +111,7 @@ public class Domino {
      * @param partida Partida en curso
      * @return devuelve FALSE si el jugador no puede jugar ninguna opcion/TRUE si la pieza puede ser colocada
      */
-    public static boolean comprobar(Mano jug,Partida partida){//falta testeo
+    public static boolean comprobar(Mano jug,Tablero partida){//falta testeo
         int n=0;
         while(n<jug.getNPiezas() && !coincidencias(partida,jug.getUnaPieza(n)))
             n++;
@@ -125,10 +124,10 @@ public class Domino {
      * @param pieza Pieza a comprobar si tiene coincidencias
      * @return TRUE si la ficha se puede situar en alguno de los extremos del tablero
      */
-    public static boolean coincidencias(Partida partida, Pieza pieza){
+    public static boolean coincidencias(Tablero partida, Pieza pieza){
+        
         return   pieza.getN1()==partida.getPrimera() || pieza.getN1()==partida.getUltima()
                 ||pieza.getN2()==partida.getPrimera() || pieza.getN2()==partida.getUltima();
-        
     }
     
     /**
@@ -138,7 +137,7 @@ public class Domino {
      */
     public static void cogerDelMonton(Mano jug,Monton monton){
         int pos=(int) (Math.random()*monton.getNPiezasMonton());
-        Pieza pieza= monton.getUnaPiezaMonton(pos);
+        Pieza pieza= monton.getUnaPieza(pos);
         jug.setUnaPieza(pieza);
         monton.eliminarPiezaMonton(pieza);
         System.out.println("Cogiendo pieza del monton...");

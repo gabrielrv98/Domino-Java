@@ -4,21 +4,24 @@
  * and open the template in the editor.
  */
 package Tablero;
+import input.Excepciones;
 import piezas.Pieza;
 
 /**
  *
  * @author OrenadorOmega
+ * @param <E> Será un pieza.
  */
-public class Partida {
-    private Nodo primero;
-    private Nodo ultimo;
-    private Nodo nuevo;
+public class Partida<E> {
+    private Nodo<E> primero;
+    private Nodo<E> ultimo;
+    private Nodo<E> nuevo;
     private int numNodos;
     
     public Partida(){
-        primero = new Nodo(null,null,null);
-        ultimo = new Nodo(null,null,primero);
+        E aux= (E) new Pieza(0,0);
+        primero = new Nodo<>(aux,null,null);
+        ultimo = new Nodo<>(aux,null,primero);
         primero.setSig(ultimo);
         numNodos=0;
     }
@@ -30,37 +33,37 @@ public class Partida {
      * Inserta la pieza al principio
      * @param pieza pieza insertada
      */
-    public void insertarPrincipio(Pieza pieza){
-        Nodo nuevo= new Nodo(pieza,primero.getSig(),primero);
-        primero.getSig().setAnt(nuevo);
-        primero.setSig(nuevo);
-        this.nuevo=nuevo;
+    public void insertarPrincipio(E pieza){
+        Nodo<E> insercion= new Nodo<>(pieza,primero.getSig(),primero);
+        primero.getSig().setAnt(insercion);
+        primero.setSig(insercion);
+        this.nuevo=insercion;
         numNodos++;
     }
     /**
      * Inserta la pieza al final
      * @param pieza pieza insertada
      */
-    public void insertarFinal(Pieza pieza){
-        Nodo nuevo= new Nodo(pieza, ultimo,ultimo.getAnt());
-        ultimo.getAnt().setSig(nuevo);
-        ultimo.setAnt(nuevo);
-        this.nuevo=nuevo;
+    public void insertarFinal(E pieza){
+        Nodo insercion= new Nodo(pieza, ultimo,ultimo.getAnt());
+        ultimo.getAnt().setSig(insercion);
+        ultimo.setAnt(insercion);
+        this.nuevo=insercion;
         numNodos++;
     }
     /**
      * 
      * @return Devuelve el valor con el que se puede unir una pieza por la izq
      */
-    public int getPrimera(){
-        return primero.getSig().getValor().getN1();
+    public E getPrimera(){
+        return primero.getSig().getValor();
     }
     /**
      * 
      * @return Devuelve el valor con el que se puede unir una pieza por la derecha
      */
-    public int getUltima(){
-        return ultimo.getAnt().getValor().getN2();
+    public E getUltima(){
+        return ultimo.getAnt().getValor();
     }
     
     @Override
